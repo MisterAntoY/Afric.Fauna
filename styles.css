@@ -117,6 +117,16 @@ section button:hover {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra leve */
 }
 
+/* Estiliza a imagem do animal dentro de cada item de resultado */
+.imagem-resultado {
+    width: 100%; /* Ocupa toda a largura do cartão */
+    max-height: 12rem; /* Limita a altura para manter os cartões uniformes */
+    object-fit: cover; /* Recorta a imagem sem distorcer as proporções */
+    border-radius: 0.6rem; /* Borda arredondada, igual ao cartão */
+    margin-bottom: 0.75rem; /* Espaçamento abaixo da imagem */
+    display: block;
+}
+
 /* Estiliza os títulos dentro dos itens de resultado */
 .item-resultado h2 {
     font-size: 1.5rem; /* Tamanho da fonte */

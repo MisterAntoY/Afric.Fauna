@@ -31,13 +31,14 @@ function pesquisar() {
             {
             resultados += `
             <div class="item-resultado">
+                <img class="imagem-resultado" src="${dado.imagem}" alt="${dado.título}" loading="lazy">
                 <h2>
-                    <a href="https://ecoangola.com/tudo-o-que-precisas-saber-palanca-negra-gigante/" target="_blank">${dado.título}</a>
+                    <a href="${dado.link}" target="_blank">${dado.título}</a>
                 </h2>
-                <p class="descrição-meta"> ${dado.descrição}</p>
+                <p class="descricao-meta"> ${dado.descrição}</p>
                 <a href="${dado.link}" target="_blank">Mais Informações</a>
             </div>
-        `;  
+        `;
         
      } 
     }
