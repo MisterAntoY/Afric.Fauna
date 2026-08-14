@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapa Interativo da Natureza Africana</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f1ea; text-align: center; margin: 20px; }
+        .map-container { max-width: 600px; margin: 0 auto; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        /* Estilo dos países no SVG */
+        .pais { fill: #c2b280; stroke: #fff; stroke-width: 2; cursor: pointer; transition: fill 0.3s; }
+        .pais:hover { fill: #8a9a86; }
+        /* Painel de Informações */
+        #info-box { margin-top: 20px; padding: 15px; background: #e2ecc8; border-radius: 5px; display: none; text-align: left; }
+        .info-title { font-weight: bold; color: #2e4a23; font-size: 1.2em; }
+    </style>
+</head>
+<body>
+
+    <h1>Explore a Fauna e Flora de África</h1>
+    <p>Clique numa região do mapa para descobrir as espécies locais.</p>
+
+    <div class="map-container">
+        <!-- Exemplo de um SVG simplificado com duas regiões africanas -->
+        <svg viewBox="0 0 400 300" width="100%">
+            <!-- Região 1: Angola (Simulação geométrica) -->
+            <path id="AO" class="pais" d="M 120 150 L 180 150 L 170 210 L 110 200 Z" />
+            <text x="130" y="180" fill="#fff" font-size="12">Angola</text>
+
+            <!-- Região 2: Quénia (Simulação geométrica) -->
+            <path id="KE" class="pais" d="M 230 110 L 290 120 L 270 170 L 220 160 Z" />
+            <text x="240" y="140" fill="#fff" font-size="12">Quénia</text>
+        </svg>
+
+        <!-- Caixa onde a informação vai aparecer -->
+        <div id="info-box">
+            <div id="info-conteudo"></div>
+        </div>
+    </div>
+
+    <script>
+        // 1. Base de dados simulada (JSON) com a fauna e flora
+        const dadosRegioes = {
+            "AO": {
+                pais: "Angola",
+                fauna: "Palanca-negra-gigante (endémica), Elefante-da-savana, Leopardo.",
+                flora: "Welwitschia mirabilis (Deserto do Namibe), Imbondeiro (Baobá)."
+            },
+            "KE": {
+                pais: "Quénia",
+                fauna: "Leão-masai, Gnu (Grande Migração), Girafa-reticulada.",
+                flora: "Acácia-guarda-chuva, Árvore da Salsicha (Kigelia africana)."
+            }
+        };
+
+        // 2. Captura os cliques nos elementos do mapa
+        document.querySelectorAll('.pais').forEach(elemento => {
+            elemento.addEventListener('click', function() {
+                const idPais = this.id;
+                const dados = dadosRegioes[idPais];
+
+                if (dados) {
+                    const infoBox = document.getElementById('info-box');
+                    const infoConteudo = document.getElementById('info-conteudo');
+                    
+                    // Atualiza o texto com HTML dinâmico (pode incluir links de imagens aqui)
+                    infoConteudo.innerHTML = `
+                        <div class="info-title">🌍 ${dados.pais}</div>
+                        <p><strong>🐾 Fauna de Destaque:</strong> ${dados.fauna}</p>
+                        <p><strong>🌱 Flora de Destaque:</strong> ${dados.flora}</p>
+                    `;
+                    
+                    // Mostra a caixa de informações
+                    infoBox.style.display = 'block';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

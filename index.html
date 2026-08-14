@@ -4,40 +4,42 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
-    <title>Meu Primeiro site</title>
+    <title>Afric.Fauna</title>
 </head>
 <body>
     <header>
+    <nav> <button class="menu_geral" id="menuG">Menu</button>
+    <ul class="menu_itens" id="menuB">
+<li> <a href="species.html">Especies</a></li>
+<li> <a href="quiz-jimbongo/index.html">Quiz</a></li>
+<li> <a href="sobre.html">Sobre</a></li>
+<li> <a href="atlas.html">Atlas</a></li>
+<li> <a href="map.html">Afric Map</a></li>
+    </ul>
+    </nav>    
         <h1>Animais de África</h1>
+        <button window.location.href = "quiz-jimbongo/index.html">quiz</button>
     </header>
     <main>
         <section>
          <input type="text" placeholder="Digite o nome do Animal..." id="campo-pesquisa"> 
          <button onclick="pesquisar()">Pesquisar</button>  
          </section>
-
          <section class="resultados-pesquisa"
             id= "resultados-pesquisa">
          </section>
-
          <section id="loading" style="display: none;">
             <p>Carregando...</p>
         </section>
-        
         <section class="error"
             id= "error">
         </section>
-    
-         
     </main>
     <footer>
      <p>2026 - Animais de África. Todos os direitos reservados </p>   
      <p>Entre em contacto pelo email:mendes.antonio@pricen.ao</p>
-
     </footer>
     <script src="dados.js"></script> 
     <script src="app.js"></script>
-    
 </body>
-
 </html>

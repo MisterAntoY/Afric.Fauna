@@ -1,3 +1,10 @@
+const G = document.getElementById =('menuG');
+const B = document.getElementById =('menuB');
+G.addEventListener('click', () => {
+    menu.classList.toggle('ativo');
+});
+
+
 function pesquisar() {
     let loading = document.getElementById("loading");
     loading.style.display = "block"; // Exibe o ícone de carregamento
@@ -46,10 +53,7 @@ function pesquisar() {
         if (!resultados) { 
             resultados = "<p>Nada foi encontrado, nenhum animal correspondente</p>"} section.innerHTML = resultados;
     }
-        
     section.innerHTML = resultados;
-    loading.style.display = "none"; // Oculta o ícone de carregamento
-           
-    } 
-     
-    
+    loading.style.display = "none"; // Oculta o ícone de carregamento 
+    }     
+
