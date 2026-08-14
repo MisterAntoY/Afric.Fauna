@@ -25,6 +25,85 @@ body {
     padding: 0; /* Remove o padding padrão */
 }
 
+/* Estiliza o cabeçalho e a barra lateral (sidebar) */
+header {
+    width: 100%;
+}
+
+.menu_geral {
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    z-index: 1300;
+    padding: 0.7rem 1.2rem;
+    border: none;
+    border-radius: 1.5rem;
+    background-color: #30475E; /* Cor de fundo do botão */
+    color: #F5F7F8; /* Cor do texto do botão */
+    font-family: inherit;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease;
+}
+
+.menu_geral:hover {
+    background-color: #000000;
+}
+
+/* Barra lateral: escondida fora da tela por padrão, desliza ao ganhar .ativo */
+.menu_itens {
+    position: fixed;
+    top: 0;
+    left: -280px;
+    width: 260px;
+    max-width: 80vw;
+    height: 100vh;
+    margin: 0;
+    padding: 5rem 1.5rem 1.5rem;
+    list-style: none;
+    background-color: #30475E;
+    box-shadow: 4px 0 16px rgba(0, 0, 0, 0.35);
+    transition: left 0.3s ease;
+    z-index: 1200;
+    box-sizing: border-box;
+}
+
+.menu_itens.ativo {
+    left: 0;
+}
+
+.menu_itens li {
+    margin-bottom: 0.5rem;
+}
+
+.menu_itens li a {
+    display: block;
+    padding: 0.7rem 0.8rem;
+    border-radius: 0.6rem;
+    color: #F5F7F8;
+    text-decoration: none;
+    font-size: 1.1rem;
+    transition: background-color 0.2s ease;
+}
+
+.menu_itens li a:hover {
+    background-color: rgba(0, 0, 0, 0.35);
+}
+
+/* Fundo escurecido atrás da barra lateral, também com .ativo */
+.menu_overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1100;
+}
+
+.menu_overlay.ativo {
+    display: block;
+}
+
 /* Estiliza os títulos h1 */
 h1 {
     font-family: sans-serif;
