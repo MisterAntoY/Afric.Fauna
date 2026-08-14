@@ -8,15 +8,17 @@
 </head>
 <body>
     <header>
-    <nav> <button class="menu_geral" id="menuG">Menu</button>
+<nav>
+    <button class="menu_geral" id="menuG" aria-expanded="false" aria-controls="menuB">Menu</button>
     <ul class="menu_itens" id="menuB">
-<li> <a href="species.html">Especies</a></li>
-<li> <a href="quiz-jimbongo/index.html">Quiz</a></li>
-<li> <a href="sobre.html">Sobre</a></li>
-<li> <a href="atlas.html">Atlas</a></li>
-<li> <a href="map.html">Afric Map</a></li>
+        <li><a href="species.html">Especies</a></li>
+        <li><a href="quiz-jimbongo/index.html">Quiz</a></li>
+        <li><a href="atlas.html">Atlas</a></li>
+        <li><a href="map.html">Afric Map</a></li>
+        <li><a href="sobre.html">Sobre</a></li>
     </ul>
-    </nav>    
+    <div class="menu_overlay" id="menuOverlay"></div>
+</nav>
         <h1>Animais de África</h1>
         <button window.location.href = "quiz-jimbongo/index.html">quiz</button>
     </header>

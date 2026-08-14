@@ -1,7 +1,38 @@
-const G = document.getElementById =('menuG');
-const B = document.getElementById =('menuB');
-G.addEventListener('click', () => {
-    menu.classList.toggle('ativo');
+const botaoMenu = document.getElementById('menuG');
+const menu = document.getElementById('menuB');
+const menuOverlay = document.getElementById('menuOverlay');
+
+function abrirMenu() {
+    menu.classList.add('ativo');
+    menuOverlay.classList.add('ativo');
+    botaoMenu.setAttribute('aria-expanded', 'true');
+}
+
+function fecharMenu() {
+    menu.classList.remove('ativo');
+    menuOverlay.classList.remove('ativo');
+    botaoMenu.setAttribute('aria-expanded', 'false');
+}
+
+botaoMenu.addEventListener('click', () => {
+    if (menu.classList.contains('ativo')) {
+        fecharMenu();
+    } else {
+        abrirMenu();
+    }
+});
+
+menuOverlay.addEventListener('click', fecharMenu);
+
+menu.querySelectorAll('a').forEach((link) => {
+    link.addEventListener('click', fecharMenu);
+});
+
+document.addEventListener('keydown', (evento) => {
+    if (evento.key === 'Escape') {
+        fecharMenu();
+    }
+});
 });
 
 
