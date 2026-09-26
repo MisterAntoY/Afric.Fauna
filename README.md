@@ -6,3 +6,5 @@
 O site também oferece um motor de busca, que permite que o usuário encontre rapidamente informações específicas sobre qualquer animal africano.
 
 Meu compromisso é não apenas inspirar a conservação da fauna africana, destacando a importância de proteger esses animais e seus habitats diante das ameaças crescentes, como a perda de biodiversidade e as mudanças climáticas.
+
+I LOVE ANGOLA
