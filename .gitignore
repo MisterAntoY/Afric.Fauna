@@ -8,3 +8,5 @@ superpowers
 .docs\superpowers\specs
 .docs\superpowers\specs
 !docs\superpowers\specs
+# Cache interno do Graphify
+graphify-out/cache/

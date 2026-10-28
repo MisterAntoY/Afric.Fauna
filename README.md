@@ -8,3 +8,15 @@ O site também oferece um motor de busca, que permite que o usuário encontre ra
 Meu compromisso é não apenas inspirar a conservação da fauna africana, destacando a importância de proteger esses animais e seus habitats diante das ameaças crescentes, como a perda de biodiversidade e as mudanças climáticas.
 
 I LOVE ANGOLA
+
+---
+
+## 🗺️ Mapa Arquitetural & Grafo de Dependências
+
+Grafo estrutural e comunidades extraído via [graphify](https://github.com/Graphify-Labs/graphify):
+
+[![Grafo de Arquitetura](./graphify-out/graph.svg)](./graphify-out/GRAPH_REPORT.md)
+
+- 📊 **Relatório Arquitetural:** [graphify-out/GRAPH_REPORT.md](./graphify-out/GRAPH_REPORT.md)
+- 🌐 **Navegador Interativo (HTML):** Abra [`graphify-out/graph.html`](./graphify-out/graph.html) no navegador
+- 🔀 **Fluxo de Chamadas & Diagramas:** Abra [`graphify-out/Afric.Fauna-callflow.html`](./graphify-out/Afric.Fauna-callflow.html) para diagramas Mermaid

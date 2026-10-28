@@ -1,0 +1,1730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Afric.Fauna — Complete Call Flow &amp; Architecture Documentation</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<style>
+:root {
+  --bg: #0f172a; --surface: #1e293b; --border: #334155;
+  --text: #e2e8f0; --muted: #94a3b8; --accent: #38bdf8;
+  --warn: #fbbf24; --err: #f87171; --ok: #34d399;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+.container { max-width: 1200px; margin: 0 auto; padding: 40px 24px; }
+h1 { font-size: 2.4rem; margin-bottom: 8px; background: linear-gradient(135deg, var(--accent), #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+h2 { font-size: 1.7rem; margin: 48px 0 16px; padding-bottom: 8px; border-bottom: 2px solid var(--accent); }
+h3 { font-size: 1.25rem; margin: 32px 0 12px; color: var(--accent); }
+h4 { font-size: 1.05rem; margin: 20px 0 8px; color: var(--warn); }
+p { margin: 8px 0; color: var(--muted); }
+.subtitle { color: var(--muted); font-size: 1.1rem; margin-bottom: 32px; }
+.mermaid { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin: 20px 0; overflow-x: auto; position: relative; }
+.mermaid.is-enhanced { padding: 0; overflow: hidden; min-height: 260px; }
+.mermaid-viewport { padding: 54px 24px 24px; overflow: hidden; cursor: grab; touch-action: none; min-height: 260px; }
+.mermaid-viewport.is-dragging { cursor: grabbing; }
+.mermaid-viewport svg { max-width: none !important; height: auto; transform-origin: 0 0; transition: transform 120ms ease; }
+.mermaid-toolbar { position: absolute; top: 10px; right: 10px; z-index: 3; display: flex; align-items: center; gap: 6px; padding: 6px; background: rgba(15,23,42,0.92); border: 1px solid var(--border); border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,0.28); }
+.mermaid-toolbar button, .mermaid-toolbar .zoom-level { height: 28px; min-width: 32px; border: 1px solid var(--border); border-radius: 6px; background: #1e293b; color: var(--text); font: 600 0.78rem system-ui, sans-serif; display: inline-flex; align-items: center; justify-content: center; }
+.mermaid-toolbar button { cursor: pointer; }
+.mermaid-toolbar button:hover { border-color: var(--accent); color: var(--accent); }
+.mermaid-toolbar .zoom-level { min-width: 52px; color: var(--muted); background: transparent; }
+.call-table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 0.92rem; }
+.call-table th { background: #1a2744; color: var(--accent); text-align: left; padding: 10px 14px; border: 1px solid var(--border); }
+.call-table td { padding: 8px 14px; border: 1px solid var(--border); vertical-align: top; }
+.call-table tr:nth-child(even) { background: rgba(255,255,255,0.02); }
+.tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+.tag-async { background: #7c3aed33; color: #a78bfa; }
+.tag-class { background: #05966933; color: var(--ok); }
+.tag-func { background: #2563eb33; color: var(--accent); }
+.tag-cmd { background: #d9770633; color: var(--warn); }
+.tag-endpoint { background: #dc262633; color: var(--err); }
+.tag-hook { background: #db277733; color: #f472b6; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 20px; margin: 16px 0; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 16px; margin: 16px 0; }
+.arrow-chain { font-family: 'Fira Code', monospace; font-size: 0.85rem; color: var(--accent); padding: 10px; background: rgba(56,189,248,0.06); border-radius: 6px; }
+code { font-family: 'Fira Code', 'Cascadia Code', monospace; background: rgba(255,255,255,0.06); padding: 1px 6px; border-radius: 3px; font-size: 0.88em; }
+ul, ol { margin: 8px 0 8px 24px; color: var(--muted); }
+li { margin: 4px 0; }
+a { color: var(--accent); }
+hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
+.nav { position: sticky; top: 0; background: var(--bg); z-index: 10; padding: 12px 0; border-bottom: 1px solid var(--border); display: flex; gap: 20px; flex-wrap: wrap; font-size: 0.9rem; }
+.nav a { text-decoration: none; }
+.nav a:hover { text-decoration: underline; }
+@media (max-width: 768px) { .container { padding: 16px; } h1 { font-size: 1.8rem; } }
+
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>Afric.Fauna — Complete Call Flow &amp; Architecture Documentation</h1>
+<p class="subtitle">Generated from graphify knowledge graph: 68 nodes, 79 edges, 14 communities. Commit: 30cee87</p>
+
+<div class="nav">
+    <a href="#overview">Architecture Overview</a>
+    <a href="#expandir-appjs-2026">Expandir Appjs 2026</a>
+    <a href="#scriptjs-quiz-jimbongo">Scriptjs Quiz Jimbongo</a>
+    <a href="#quiz-jimbongo-assets">Quiz Jimbongo Assets</a>
+    <a href="#expandir-2026-conteudo">Expandir 2026 Conteudo</a>
+    <a href="#quiz-jimbongo-assets-8dfef2">Quiz Jimbongo Assets</a>
+    <a href="#dadosjs-dados">Dadosjs Dados</a>
+    <a href="#mapas-blobsjs-updatedata">Mapas Blobsjs Updatedata</a>
+    <a href="#bolhas67-blobsjs-mapas">Bolhas67 Blobsjs Mapas</a>
+    <a href="#country-appjs-mapas">Country Appjs Mapas</a>
+    <a href="#readmemd-africfauna">Readmemd Africfauna</a>
+    <a href="#bubbles-appjs-mapas">Bubbles Appjs Mapas</a>
+    <a href="#glob-appjs-mapas">Glob Appjs Mapas</a>
+    <a href="#select-appjs-mapas">Select Appjs Mapas</a>
+    <a href="#zoom-appjs-mapas">Zoom Appjs Mapas</a>
+</div>
+
+<!-- ====== Architecture Overview ====== -->
+<h2 id="overview">1. Architecture Overview</h2>
+
+<div class="mermaid">
+
+%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
+flowchart LR
+    EXPANDIR_APPJS_2026_E1CD4ABD("Expandir Appjs 2026<br/><small>15 nodes</small>")
+    class EXPANDIR_APPJS_2026_E1CD4ABD module;
+    SCRIPTJS_QUIZ_JIMBONGO_6D9A7E03("Scriptjs Quiz Jimbongo<br/><small>15 nodes</small>")
+    class SCRIPTJS_QUIZ_JIMBONGO_6D9A7E03 module;
+    QUIZ_JIMBONGO_ASSETS_AD78D1A6("Quiz Jimbongo Assets<br/><small>11 nodes</small>")
+    class QUIZ_JIMBONGO_ASSETS_AD78D1A6 module;
+    EXPANDIR_2026_CONTEUDO_6B2E8D8D("Expandir 2026 Conteudo<br/><small>7 nodes</small>")
+    class EXPANDIR_2026_CONTEUDO_6B2E8D8D module;
+    QUIZ_JIMBONGO_ASSETS_8DFEF2_7C1C1BE6("Quiz Jimbongo Assets<br/><small>6 nodes</small>")
+    class QUIZ_JIMBONGO_ASSETS_8DFEF2_7C1C1BE6 module;
+    DADOSJS_DADOS_612EFC1A("Dadosjs Dados<br/><small>2 nodes</small>")
+    class DADOSJS_DADOS_612EFC1A module;
+    MAPAS_BLOBSJS_UPDATEDATA_27775DC7("Mapas Blobsjs Updatedata<br/><small>2 nodes</small>")
+    class MAPAS_BLOBSJS_UPDATEDATA_27775DC7 module;
+    BOLHAS67_BLOBSJS_MAPAS_563FE929("Bolhas67 Blobsjs Mapas<br/><small>2 nodes</small>")
+    class BOLHAS67_BLOBSJS_MAPAS_563FE929 module;
+    COUNTRY_APPJS_MAPAS_647B6E91("Country Appjs Mapas<br/><small>2 nodes</small>")
+    class COUNTRY_APPJS_MAPAS_647B6E91 module;
+    READMEMD_AFRICFAUNA_C58D5DE3("Readmemd Africfauna<br/><small>2 nodes</small>")
+    class READMEMD_AFRICFAUNA_C58D5DE3 module;
+    BUBBLES_APPJS_MAPAS_60FDC892("Bubbles Appjs Mapas<br/><small>1 nodes</small>")
+    class BUBBLES_APPJS_MAPAS_60FDC892 module;
+    GLOB_APPJS_MAPAS_FADE0860("Glob Appjs Mapas<br/><small>1 nodes</small>")
+    class GLOB_APPJS_MAPAS_FADE0860 module;
+    SELECT_APPJS_MAPAS_633BF503("Select Appjs Mapas<br/><small>1 nodes</small>")
+    class SELECT_APPJS_MAPAS_633BF503 module;
+    ZOOM_APPJS_MAPAS_6ADC0044("Zoom Appjs Mapas<br/><small>1 nodes</small>")
+    class ZOOM_APPJS_MAPAS_6ADC0044 module;
+    SCRIPTJS_QUIZ_JIMBONGO_6D9A7E03 -->|contains x11| QUIZ_JIMBONGO_ASSETS_AD78D1A6
+    SCRIPTJS_QUIZ_JIMBONGO_6D9A7E03 -->|contains x6| QUIZ_JIMBONGO_ASSETS_8DFEF2_7C1C1BE6
+    QUIZ_JIMBONGO_ASSETS_AD78D1A6 -->|calls| QUIZ_JIMBONGO_ASSETS_8DFEF2_7C1C1BE6
+    QUIZ_JIMBONGO_ASSETS_8DFEF2_7C1C1BE6 -->|calls| QUIZ_JIMBONGO_ASSETS_AD78D1A6
+    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
+    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
+    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
+    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
+    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
+    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
+    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
+    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
+    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
+</div>
+
+<div class="grid">
+  <div class="card">
+    <h4>Architecture Layers</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><th>Layer</th><th>Nodes</th><th>Communities</th></tr>
+      <tr><td>Expandir Appjs 2026</td><td>15</td><td><code>0</code></td></tr><tr><td>Scriptjs Quiz Jimbongo</td><td>15</td><td><code>1</code></td></tr><tr><td>Quiz Jimbongo Assets</td><td>11</td><td><code>2</code></td></tr><tr><td>Expandir 2026 Conteudo</td><td>7</td><td><code>3</code></td></tr><tr><td>Quiz Jimbongo Assets</td><td>6</td><td><code>4</code></td></tr><tr><td>Dadosjs Dados</td><td>2</td><td><code>5</code></td></tr><tr><td>Mapas Blobsjs Updatedata</td><td>2</td><td><code>6</code></td></tr><tr><td>Bolhas67 Blobsjs Mapas</td><td>2</td><td><code>7</code></td></tr><tr><td>Country Appjs Mapas</td><td>2</td><td><code>8</code></td></tr><tr><td>Readmemd Africfauna</td><td>2</td><td><code>9</code></td></tr><tr><td>Bubbles Appjs Mapas</td><td>1</td><td><code>10</code></td></tr><tr><td>Glob Appjs Mapas</td><td>1</td><td><code>11</code></td></tr><tr><td>Select Appjs Mapas</td><td>1</td><td><code>12</code></td></tr><tr><td>Zoom Appjs Mapas</td><td>1</td><td><code>13</code></td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Core Flow</h4>
+    <div class="arrow-chain">Expandir Appjs 2026 -&gt; Scriptjs Quiz Jimbongo -&gt; Quiz Jimbongo Assets -&gt; Quiz Jimbongo Assets -&gt; Expandir 2026 Conteudo -&gt; Dadosjs Dados -&gt; Mapas Blobsjs Updatedata</div>
+  </div>
+</div>
+<div class="grid">
+  <div class="card">
+    <h4>Graph Report Highlights</h4>
+    <ul>
+      <li>68 nodes · 79 edges · 14 communities (5 shown, 9 thin omitted)</li>
+      <li>Extraction: 89% EXTRACTED · 11% INFERRED · 0% AMBIGUOUS · INFERRED: 9 edges (avg confidence: 0.86)</li>
+      <li>Token cost: 0 input · 0 output</li>
+      <li>1. `hideCards()` - 6 edges</li>
+      <li>2. `checkAnswer()` - 6 edges</li>
+      <li>3. `Global Constraints` - 6 edges</li>
+    </ul>
+  </div>
+</div>
+<hr>
+<!-- ====== 2. Expandir Appjs 2026 ====== -->
+<h2 id="expandir-appjs-2026">2. Expandir Appjs 2026</h2>
+<p>Expandir Appjs 2026 groups implementation around expandir, appjs, 2026, conteudomd, mostly in !superpowers/plans/2026-08-13-expandir-conteudo.md, app.js. This section covers 15 nodes and 14 internal edges; the diagram shows only representative relationships to stay readable.</p>
+
+<div class="mermaid">
+%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
+flowchart LR
+    %% Section: Expandir Appjs 2026 (15 nodes, 14 edges)
+    subgraph expandir_appjs_2026_superpowers_plans_2026_08_13_d9025c3d["!superpowers/plans/2026-08-13-expandir-conteudo.md"]
+        superpowers_plans_2026_08_13_expandir_conteudo_g_f3c0b9b8("Global Constraints<br/><small>!superpowers/plans/2026-08-13-expandir-conteudo.md</small>")
+        superpowers_plans_2026_08_13_expandir_conteudo_88e7e1a0("2026-08-13-expandir-conteudo.md")
+        superpowers_plans_2026_08_13_expandir_conteudo_e_95ac0828("Expandir Conteúdo do AFRIC.Fauna — Plan...<br/><small>!superpowers/plans/2026-08-13-expandir-conteudo.md</small>")
+        superpowers_plans_2026_08_13_expandir_conteudo_t_e0459b0e("Task 2: Reescrever dados.js com os da...<br/><small>!superpowers/plans/2026-08-13-expandir-conteudo.md</small>")
+        superpowers_plans_2026_08_13_expandir_conteudo_t_56a6a5ff("Task 1: Coletar dados reais dos ~18 nov...<br/><small>!superpowers/plans/2026-08-13-expandir-conteudo.md</small>")
+        superpowers_plans_2026_08_13_expandir_conteudo_t_efadcf4d("Task 3: Corrigir app.js — link dinâmi...<br/><small>!superpowers/plans/2026-08-13-expandir-conteudo.md</small>")
+        superpowers_plans_2026_08_13_expandir_conteudo_t_c4163da8("Task 4: Estilizar a imagem em styles.css<br/><small>!superpowers/plans/2026-08-13-expandir-conteudo.md</small>")
+        superpowers_plans_2026_08_13_expandir_conteudo_t_4e601c0f("Task 5: Verificação final end-to-end<br/><small>!superpowers/plans/2026-08-13-expandir-conteudo.md</small>")
+    end
+    subgraph expandir_appjs_2026_app_js_a1792aaf["app.js"]
+        app_7d104347("app.js")
+        app_fecharmenu_9dd7e8ce("fecharMenu()<br/><small>app.js</small>")
+        app_abrirmenu_adca5a06("abrirMenu()<br/><small>app.js</small>")
+        app_botaomenu_bcb82b21("botaoMenu<br/><small>app.js</small>")
+        app_menu_546786f0("menu<br/><small>app.js</small>")
+        app_menuoverlay_28ae6077("menuOverlay<br/><small>app.js</small>")
+        app_pesquisar_4515821d("pesquisar()<br/><small>app.js</small>")
+    end
+    app_7d104347 -->|contains| app_fecharmenu_9dd7e8ce
+    app_7d104347 -->|contains| app_abrirmenu_adca5a06
+    app_7d104347 -->|contains| app_botaomenu_bcb82b21
+    app_7d104347 -->|contains| app_menu_546786f0
+    app_7d104347 -->|contains| app_menuoverlay_28ae6077
+    app_7d104347 -->|contains| app_pesquisar_4515821d
+    superpowers_plans_2026_08_13_expandir_conteudo_88e7e1a0 -->|contains| superpowers_plans_2026_08_13_expandir_conteudo_e_95ac0828
+    superpowers_plans_2026_08_13_expandir_conteudo_e_95ac0828 -->|contains| superpowers_plans_2026_08_13_expandir_conteudo_g_f3c0b9b8
+    superpowers_plans_2026_08_13_expandir_conteudo_g_f3c0b9b8 -->|contains| superpowers_plans_2026_08_13_expandir_conteudo_t_efadcf4d
+    superpowers_plans_2026_08_13_expandir_conteudo_g_f3c0b9b8 -->|contains| superpowers_plans_2026_08_13_expandir_conteudo_t_c4163da8
+    superpowers_plans_2026_08_13_expandir_conteudo_g_f3c0b9b8 -->|contains| superpowers_plans_2026_08_13_expandir_conteudo_t_56a6a5ff
+    superpowers_plans_2026_08_13_expandir_conteudo_g_f3c0b9b8 -->|contains| superpowers_plans_2026_08_13_expandir_conteudo_t_4e601c0f
+    superpowers_plans_2026_08_13_expandir_conteudo_g_f3c0b9b8 -->|contains| superpowers_plans_2026_08_13_expandir_conteudo_t_e0459b0e
+    superpowers_plans_2026_08_13_expandir_conteudo_t_e0459b0e -->|references| app_pesquisar_4515821d
+    class superpowers_plans_2026_08_13_expandir_conteudo_g_f3c0b9b8 concept;
+    class superpowers_plans_2026_08_13_expandir_conteudo_88e7e1a0 concept;
+    class superpowers_plans_2026_08_13_expandir_conteudo_e_95ac0828 concept;
+    class superpowers_plans_2026_08_13_expandir_conteudo_t_e0459b0e concept;
+    class superpowers_plans_2026_08_13_expandir_conteudo_t_56a6a5ff concept;
+    class superpowers_plans_2026_08_13_expandir_conteudo_t_efadcf4d concept;
+    class superpowers_plans_2026_08_13_expandir_conteudo_t_c4163da8 concept;
+    class superpowers_plans_2026_08_13_expandir_conteudo_t_4e601c0f concept;
+    class app_7d104347 module;
+    class app_fecharmenu_9dd7e8ce function;
+    class app_abrirmenu_adca5a06 function;
+    class app_botaomenu_bcb82b21 function;
+    class app_menu_546786f0 function;
+    class app_menuoverlay_28ae6077 function;
+    class app_pesquisar_4515821d function;
+    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
+    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
+    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
+    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
+    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
+    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
+    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
+    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
+    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
+</div>
+
+<h3>Call Details</h3>
+<table class="call-table">
+<tr>
+  <th style="width:5%">#</th>
+  <th style="width:28%">Node</th>
+  <th style="width:10%">Type</th>
+  <th style="width:17%">Caller</th>
+  <th style="width:20%">Callees</th>
+  <th style="width:20%">Description</th>
+</tr>
+<tr>
+  <td>1</td>
+  <td><code>abrirMenu()</code><br><small style="color:var(--muted)">app.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>abrirMenu() node in app.js.</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>fecharMenu()</code><br><small style="color:var(--muted)">app.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>fecharMenu() node in app.js.</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td><code>pesquisar()</code><br><small style="color:var(--muted)">app.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>pesquisar() node in app.js.</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td><code>app.js</code><br><small style="color:var(--muted)">app.js</small></td>
+  <td><span class="tag tag-class">Module</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>app.js node in app.js.</td>
+</tr>
+<tr>
+  <td>5</td>
+  <td><code>botaoMenu</code><br><small style="color:var(--muted)">app.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>botaoMenu node in app.js.</td>
+</tr>
+<tr>
+  <td>6</td>
+  <td><code>menu</code><br><small style="color:var(--muted)">app.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>menu node in app.js.</td>
+</tr>
+<tr>
+  <td>7</td>
+  <td><code>menuOverlay</code><br><small style="color:var(--muted)">app.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>menuOverlay node in app.js.</td>
+</tr>
+<tr>
+  <td>8</td>
+  <td><code>2026-08-13-expandir-conteudo.md</code><br><small style="color:var(--muted)">!superpowers/plans/2026-08-13-expandir-conteudo.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing 2026-08-13-expandir-conteudo.md.</td>
+</tr>
+<tr>
+  <td>9</td>
+  <td><code>Expandir Conteúdo do AFRIC.Fauna — Plano de Implementação</code><br><small style="color:var(--muted)">!superpowers/plans/2026-08-13-expandir-conteudo.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Expandir Conteúdo do AFRIC.Fauna — Plano de Implementação.</td>
+</tr>
+<tr>
+  <td>10</td>
+  <td><code>Global Constraints</code><br><small style="color:var(--muted)">!superpowers/plans/2026-08-13-expandir-conteudo.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Global Constraints.</td>
+</tr>
+<tr>
+  <td>11</td>
+  <td><code>Task 1: Coletar dados reais dos ~18 novos animais via API da Wikipedia</code><br><small style="color:var(--muted)">!superpowers/plans/2026-08-13-expandir-conteudo.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Task 1: Coletar dados reais dos ~18 novos animais via API da Wikipedia.</td>
+</tr>
+<tr>
+  <td>12</td>
+  <td><code>Task 2: Reescrever `dados.js` com os dados coletados</code><br><small style="color:var(--muted)">!superpowers/plans/2026-08-13-expandir-conteudo.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Task 2: Reescrever `dados.js` com os dados coletados.</td>
+</tr>
+<tr>
+  <td>13</td>
+  <td><code>Task 3: Corrigir `app.js` — link dinâmico, classe CSS, e renderização de imagem</code><br><small style="color:var(--muted)">!superpowers/plans/2026-08-13-expandir-conteudo.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Task 3: Corrigir `app.js` — link dinâmico, classe CSS, e renderização de imagem.</td>
+</tr>
+<tr>
+  <td>14</td>
+  <td><code>Task 4: Estilizar a imagem em `styles.css`</code><br><small style="color:var(--muted)">!superpowers/plans/2026-08-13-expandir-conteudo.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Task 4: Estilizar a imagem em `styles.css`.</td>
+</tr>
+<tr>
+  <td>15</td>
+  <td><code>Task 5: Verificação final end-to-end</code><br><small style="color:var(--muted)">!superpowers/plans/2026-08-13-expandir-conteudo.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Task 5: Verificação final end-to-end.</td>
+</tr>
+</table>
+
+<div class="grid">
+  <div class="card">
+    <h4>Key Files</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><th>File</th><th>Coverage</th></tr>
+      <tr><td><code>!superpowers/plans/2026-08-13-expandir-conteudo.md</code></td><td>8 nodes</td></tr>
+<tr><td><code>app.js</code></td><td>7 nodes</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Design Notes</h4>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x13, references x1. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+  </div>
+</div>
+<hr>
+
+<!-- ====== 3. Scriptjs Quiz Jimbongo ====== -->
+<h2 id="scriptjs-quiz-jimbongo">3. Scriptjs Quiz Jimbongo</h2>
+<p>Scriptjs Quiz Jimbongo groups implementation around scriptjs, quiz, jimbongo, assets, mostly in assets/js/script.js. This section covers 15 nodes and 14 internal edges; the diagram shows only representative relationships to stay readable.</p>
+
+<div class="mermaid">
+%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
+flowchart LR
+    %% Section: Scriptjs Quiz Jimbongo (15 nodes, 14 edges)
+    quiz_jimbongo_assets_js_script_a59ec38f("script.js")
+    quiz_jimbongo_assets_js_script_questions_9848feef("questions<br/><small>assets/js/script.js</small>")
+    quiz_jimbongo_assets_js_script_score_6c500db5("score<br/><small>assets/js/script.js</small>")
+    quiz_jimbongo_assets_js_script_submitbutton_f5b57cf3("submitButton<br/><small>assets/js/script.js</small>")
+    quiz_jimbongo_assets_js_script_inputelement_66160658("inputElement<br/><small>assets/js/script.js</small>")
+    quiz_jimbongo_assets_js_script_clearbutton_8cc3bd68("clearButton<br/><small>assets/js/script.js</small>")
+    quiz_jimbongo_assets_js_script_backbutton_1f91b459("backButton<br/><small>assets/js/script.js</small>")
+    quiz_jimbongo_assets_js_script_leaderboardlink_fb8387ba("leaderboardLink<br/><small>assets/js/script.js</small>")
+    quiz_jimbongo_assets_js_script_startcard_3ea0578e("startCard<br/><small>assets/js/script.js</small>")
+    quiz_jimbongo_assets_js_script_questioncard_f8d0e790("questionCard<br/><small>assets/js/script.js</small>")
+    quiz_jimbongo_assets_js_script_scorecard_7f75d8ca("scoreCard<br/><small>assets/js/script.js</small>")
+    quiz_jimbongo_assets_js_script_leaderboardcard_9318b5c0("leaderboardCard<br/><small>assets/js/script.js</small>")
+    quiz_jimbongo_assets_js_script_resultdiv_7d984b05("resultDiv<br/><small>assets/js/script.js</small>")
+    quiz_jimbongo_assets_js_script_resulttext_516b739b("resultText<br/><small>assets/js/script.js</small>")
+    quiz_jimbongo_assets_js_script_timedisplay_03e26782("timeDisplay<br/><small>assets/js/script.js</small>")
+    quiz_jimbongo_assets_js_script_a59ec38f -->|contains| quiz_jimbongo_assets_js_script_questions_9848feef
+    quiz_jimbongo_assets_js_script_a59ec38f -->|contains| quiz_jimbongo_assets_js_script_score_6c500db5
+    quiz_jimbongo_assets_js_script_a59ec38f -->|contains| quiz_jimbongo_assets_js_script_submitbutton_f5b57cf3
+    quiz_jimbongo_assets_js_script_a59ec38f -->|contains| quiz_jimbongo_assets_js_script_inputelement_66160658
+    quiz_jimbongo_assets_js_script_a59ec38f -->|contains| quiz_jimbongo_assets_js_script_clearbutton_8cc3bd68
+    quiz_jimbongo_assets_js_script_a59ec38f -->|contains| quiz_jimbongo_assets_js_script_backbutton_1f91b459
+    quiz_jimbongo_assets_js_script_a59ec38f -->|contains| quiz_jimbongo_assets_js_script_leaderboardlink_fb8387ba
+    quiz_jimbongo_assets_js_script_a59ec38f -->|contains| quiz_jimbongo_assets_js_script_startcard_3ea0578e
+    quiz_jimbongo_assets_js_script_a59ec38f -->|contains| quiz_jimbongo_assets_js_script_questioncard_f8d0e790
+    quiz_jimbongo_assets_js_script_a59ec38f -->|contains| quiz_jimbongo_assets_js_script_scorecard_7f75d8ca
+    quiz_jimbongo_assets_js_script_a59ec38f -->|contains| quiz_jimbongo_assets_js_script_leaderboardcard_9318b5c0
+    quiz_jimbongo_assets_js_script_a59ec38f -->|contains| quiz_jimbongo_assets_js_script_resultdiv_7d984b05
+    quiz_jimbongo_assets_js_script_a59ec38f -->|contains| quiz_jimbongo_assets_js_script_resulttext_516b739b
+    quiz_jimbongo_assets_js_script_a59ec38f -->|contains| quiz_jimbongo_assets_js_script_timedisplay_03e26782
+    class quiz_jimbongo_assets_js_script_a59ec38f module;
+    class quiz_jimbongo_assets_js_script_questions_9848feef function;
+    class quiz_jimbongo_assets_js_script_score_6c500db5 function;
+    class quiz_jimbongo_assets_js_script_submitbutton_f5b57cf3 function;
+    class quiz_jimbongo_assets_js_script_inputelement_66160658 function;
+    class quiz_jimbongo_assets_js_script_clearbutton_8cc3bd68 function;
+    class quiz_jimbongo_assets_js_script_backbutton_1f91b459 function;
+    class quiz_jimbongo_assets_js_script_leaderboardlink_fb8387ba function;
+    class quiz_jimbongo_assets_js_script_startcard_3ea0578e function;
+    class quiz_jimbongo_assets_js_script_questioncard_f8d0e790 function;
+    class quiz_jimbongo_assets_js_script_scorecard_7f75d8ca function;
+    class quiz_jimbongo_assets_js_script_leaderboardcard_9318b5c0 function;
+    class quiz_jimbongo_assets_js_script_resultdiv_7d984b05 function;
+    class quiz_jimbongo_assets_js_script_resulttext_516b739b function;
+    class quiz_jimbongo_assets_js_script_timedisplay_03e26782 function;
+    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
+    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
+    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
+    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
+    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
+    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
+    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
+    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
+    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
+</div>
+
+<h3>Call Details</h3>
+<table class="call-table">
+<tr>
+  <th style="width:5%">#</th>
+  <th style="width:28%">Node</th>
+  <th style="width:10%">Type</th>
+  <th style="width:17%">Caller</th>
+  <th style="width:20%">Callees</th>
+  <th style="width:20%">Description</th>
+</tr>
+<tr>
+  <td>1</td>
+  <td><code>script.js</code><br><small style="color:var(--muted)">assets/js/script.js</small></td>
+  <td><span class="tag tag-class">Module</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>checkAnswer()</code><br><small style="color:var(--muted)">assets/js/script.js</small><br><code>clearHighscores()</code><br><small style="color:var(--muted)">assets/js/script.js</small><br><code>returnToStart()</code><br><small style="color:var(--muted)">assets/js/script.js</small><br>+3 more</td>
+  <td>script.js node in assets/js/script.js.</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>backButton</code><br><small style="color:var(--muted)">assets/js/script.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>backButton node in assets/js/script.js.</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td><code>clearButton</code><br><small style="color:var(--muted)">assets/js/script.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>clearButton node in assets/js/script.js.</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td><code>inputElement</code><br><small style="color:var(--muted)">assets/js/script.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>inputElement node in assets/js/script.js.</td>
+</tr>
+<tr>
+  <td>5</td>
+  <td><code>leaderboardCard</code><br><small style="color:var(--muted)">assets/js/script.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>leaderboardCard node in assets/js/script.js.</td>
+</tr>
+<tr>
+  <td>6</td>
+  <td><code>leaderboardLink</code><br><small style="color:var(--muted)">assets/js/script.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>leaderboardLink node in assets/js/script.js.</td>
+</tr>
+<tr>
+  <td>7</td>
+  <td><code>questionCard</code><br><small style="color:var(--muted)">assets/js/script.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>questionCard node in assets/js/script.js.</td>
+</tr>
+<tr>
+  <td>8</td>
+  <td><code>questions</code><br><small style="color:var(--muted)">assets/js/script.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>questions node in assets/js/script.js.</td>
+</tr>
+<tr>
+  <td>9</td>
+  <td><code>resultDiv</code><br><small style="color:var(--muted)">assets/js/script.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>resultDiv node in assets/js/script.js.</td>
+</tr>
+<tr>
+  <td>10</td>
+  <td><code>resultText</code><br><small style="color:var(--muted)">assets/js/script.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>resultText node in assets/js/script.js.</td>
+</tr>
+<tr>
+  <td>11</td>
+  <td><code>score</code><br><small style="color:var(--muted)">assets/js/script.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>score node in assets/js/script.js.</td>
+</tr>
+<tr>
+  <td>12</td>
+  <td><code>scoreCard</code><br><small style="color:var(--muted)">assets/js/script.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>scoreCard node in assets/js/script.js.</td>
+</tr>
+<tr>
+  <td>13</td>
+  <td><code>startCard</code><br><small style="color:var(--muted)">assets/js/script.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>startCard node in assets/js/script.js.</td>
+</tr>
+<tr>
+  <td>14</td>
+  <td><code>submitButton</code><br><small style="color:var(--muted)">assets/js/script.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>submitButton node in assets/js/script.js.</td>
+</tr>
+<tr>
+  <td>15</td>
+  <td><code>timeDisplay</code><br><small style="color:var(--muted)">assets/js/script.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>timeDisplay node in assets/js/script.js.</td>
+</tr>
+</table>
+
+<div class="grid">
+  <div class="card">
+    <h4>Key Files</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><th>File</th><th>Coverage</th></tr>
+      <tr><td><code>assets/js/script.js</code></td><td>15 nodes</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Design Notes</h4>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x14. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+  </div>
+</div>
+<hr>
+
+<!-- ====== 4. Quiz Jimbongo Assets ====== -->
+<h2 id="quiz-jimbongo-assets">4. Quiz Jimbongo Assets</h2>
+<p>Quiz Jimbongo Assets groups implementation around quiz, jimbongo, assets, scriptjs, mostly in assets/js/script.js. This section covers 11 nodes and 15 internal edges; the diagram shows only representative relationships to stay readable.</p>
+
+<div class="mermaid">
+%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
+flowchart LR
+    %% Section: Quiz Jimbongo Assets (11 nodes, 15 edges)
+    quiz_jimbongo_assets_js_script_checkanswer_689cc7ff("checkAnswer()<br/><small>assets/js/script.js</small>")
+    quiz_jimbongo_assets_js_script_startquiz_9af37d65("startQuiz()<br/><small>assets/js/script.js</small>")
+    quiz_jimbongo_assets_js_script_countdown_db0e577d("countdown()<br/><small>assets/js/script.js</small>")
+    quiz_jimbongo_assets_js_script_showleaderboard_14c16ddf("showLeaderboard()<br/><small>assets/js/script.js</small>")
+    quiz_jimbongo_assets_js_script_returntostart_df987be9("returnToStart()<br/><small>assets/js/script.js</small>")
+    quiz_jimbongo_assets_js_script_optioniscorrect_55195b93("optionIsCorrect()<br/><small>assets/js/script.js</small>")
+    quiz_jimbongo_assets_js_script_displaytime_7f5d08a4("displayTime()<br/><small>assets/js/script.js</small>")
+    quiz_jimbongo_assets_js_script_endquiz_774ec837("endQuiz()<br/><small>assets/js/script.js</small>")
+    quiz_jimbongo_assets_js_script_displayquestion_74873868("displayQuestion()<br/><small>assets/js/script.js</small>")
+    quiz_jimbongo_assets_js_script_hidecards_7d2f360d("hideCards()<br/><small>assets/js/script.js</small>")
+    quiz_jimbongo_assets_js_script_hideresulttext_327ad45e("hideResultText()<br/><small>assets/js/script.js</small>")
+    quiz_jimbongo_assets_js_script_checkanswer_689cc7ff -->|calls| quiz_jimbongo_assets_js_script_optioniscorrect_55195b93
+    quiz_jimbongo_assets_js_script_checkanswer_689cc7ff -->|calls| quiz_jimbongo_assets_js_script_displaytime_7f5d08a4
+    quiz_jimbongo_assets_js_script_checkanswer_689cc7ff -->|calls| quiz_jimbongo_assets_js_script_endquiz_774ec837
+    quiz_jimbongo_assets_js_script_checkanswer_689cc7ff -->|calls| quiz_jimbongo_assets_js_script_displayquestion_74873868
+    quiz_jimbongo_assets_js_script_countdown_db0e577d -->|calls| quiz_jimbongo_assets_js_script_displaytime_7f5d08a4
+    quiz_jimbongo_assets_js_script_countdown_db0e577d -->|calls| quiz_jimbongo_assets_js_script_endquiz_774ec837
+    quiz_jimbongo_assets_js_script_endquiz_774ec837 -->|calls| quiz_jimbongo_assets_js_script_hidecards_7d2f360d
+    quiz_jimbongo_assets_js_script_returntostart_df987be9 -->|calls| quiz_jimbongo_assets_js_script_hidecards_7d2f360d
+    quiz_jimbongo_assets_js_script_showleaderboard_14c16ddf -->|calls| quiz_jimbongo_assets_js_script_hidecards_7d2f360d
+    quiz_jimbongo_assets_js_script_showleaderboard_14c16ddf -->|calls| quiz_jimbongo_assets_js_script_displaytime_7f5d08a4
+    quiz_jimbongo_assets_js_script_startquiz_9af37d65 -->|calls| quiz_jimbongo_assets_js_script_hidecards_7d2f360d
+    quiz_jimbongo_assets_js_script_startquiz_9af37d65 -->|calls| quiz_jimbongo_assets_js_script_displayquestion_74873868
+    quiz_jimbongo_assets_js_script_startquiz_9af37d65 -->|calls| quiz_jimbongo_assets_js_script_displaytime_7f5d08a4
+    class quiz_jimbongo_assets_js_script_checkanswer_689cc7ff function;
+    class quiz_jimbongo_assets_js_script_startquiz_9af37d65 function;
+    class quiz_jimbongo_assets_js_script_countdown_db0e577d function;
+    class quiz_jimbongo_assets_js_script_showleaderboard_14c16ddf function;
+    class quiz_jimbongo_assets_js_script_returntostart_df987be9 function;
+    class quiz_jimbongo_assets_js_script_optioniscorrect_55195b93 function;
+    class quiz_jimbongo_assets_js_script_displaytime_7f5d08a4 function;
+    class quiz_jimbongo_assets_js_script_endquiz_774ec837 function;
+    class quiz_jimbongo_assets_js_script_displayquestion_74873868 function;
+    class quiz_jimbongo_assets_js_script_hidecards_7d2f360d function;
+    class quiz_jimbongo_assets_js_script_hideresulttext_327ad45e function;
+    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
+    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
+    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
+    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
+    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
+    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
+    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
+    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
+    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
+</div>
+
+<h3>Call Details</h3>
+<table class="call-table">
+<tr>
+  <th style="width:5%">#</th>
+  <th style="width:28%">Node</th>
+  <th style="width:10%">Type</th>
+  <th style="width:17%">Caller</th>
+  <th style="width:20%">Callees</th>
+  <th style="width:20%">Description</th>
+</tr>
+<tr>
+  <td>1</td>
+  <td><code>checkAnswer()</code><br><small style="color:var(--muted)">assets/js/script.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>script.js</code><br><small style="color:var(--muted)">assets/js/script.js</small></td>
+  <td><code>displayQuestion()</code><br><small style="color:var(--muted)">assets/js/script.js</small><br><code>displayTime()</code><br><small style="color:var(--muted)">assets/js/script.js</small><br><code>endQuiz()</code><br><small style="color:var(--muted)">assets/js/script.js</small><br>+2 more</td>
+  <td>checkAnswer() node in assets/js/script.js.</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>countdown()</code><br><small style="color:var(--muted)">assets/js/script.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>startQuiz()</code><br><small style="color:var(--muted)">assets/js/script.js</small></td>
+  <td><code>displayTime()</code><br><small style="color:var(--muted)">assets/js/script.js</small><br><code>endQuiz()</code><br><small style="color:var(--muted)">assets/js/script.js</small></td>
+  <td>countdown() node in assets/js/script.js.</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td><code>displayQuestion()</code><br><small style="color:var(--muted)">assets/js/script.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>checkAnswer()</code><br><small style="color:var(--muted)">assets/js/script.js</small><br><code>startQuiz()</code><br><small style="color:var(--muted)">assets/js/script.js</small></td>
+  <td>No direct outbound edge</td>
+  <td>displayQuestion() node in assets/js/script.js.</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td><code>displayTime()</code><br><small style="color:var(--muted)">assets/js/script.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>checkAnswer()</code><br><small style="color:var(--muted)">assets/js/script.js</small><br><code>countdown()</code><br><small style="color:var(--muted)">assets/js/script.js</small><br><code>showLeaderboard()</code><br><small style="color:var(--muted)">assets/js/script.js</small><br>+1 more</td>
+  <td>No direct outbound edge</td>
+  <td>displayTime() node in assets/js/script.js.</td>
+</tr>
+<tr>
+  <td>5</td>
+  <td><code>endQuiz()</code><br><small style="color:var(--muted)">assets/js/script.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>checkAnswer()</code><br><small style="color:var(--muted)">assets/js/script.js</small><br><code>countdown()</code><br><small style="color:var(--muted)">assets/js/script.js</small></td>
+  <td><code>hideCards()</code><br><small style="color:var(--muted)">assets/js/script.js</small></td>
+  <td>endQuiz() node in assets/js/script.js.</td>
+</tr>
+<tr>
+  <td>6</td>
+  <td><code>hideCards()</code><br><small style="color:var(--muted)">assets/js/script.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>endQuiz()</code><br><small style="color:var(--muted)">assets/js/script.js</small><br><code>returnToStart()</code><br><small style="color:var(--muted)">assets/js/script.js</small><br><code>showLeaderboard()</code><br><small style="color:var(--muted)">assets/js/script.js</small><br>+2 more</td>
+  <td>No direct outbound edge</td>
+  <td>hideCards() node in assets/js/script.js.</td>
+</tr>
+<tr>
+  <td>7</td>
+  <td><code>hideResultText()</code><br><small style="color:var(--muted)">assets/js/script.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>checkAnswer()</code><br><small style="color:var(--muted)">assets/js/script.js</small></td>
+  <td>No direct outbound edge</td>
+  <td>hideResultText() node in assets/js/script.js.</td>
+</tr>
+<tr>
+  <td>8</td>
+  <td><code>optionIsCorrect()</code><br><small style="color:var(--muted)">assets/js/script.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>checkAnswer()</code><br><small style="color:var(--muted)">assets/js/script.js</small></td>
+  <td>No direct outbound edge</td>
+  <td>optionIsCorrect() node in assets/js/script.js.</td>
+</tr>
+<tr>
+  <td>9</td>
+  <td><code>returnToStart()</code><br><small style="color:var(--muted)">assets/js/script.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>script.js</code><br><small style="color:var(--muted)">assets/js/script.js</small></td>
+  <td><code>hideCards()</code><br><small style="color:var(--muted)">assets/js/script.js</small></td>
+  <td>returnToStart() node in assets/js/script.js.</td>
+</tr>
+<tr>
+  <td>10</td>
+  <td><code>showLeaderboard()</code><br><small style="color:var(--muted)">assets/js/script.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>script.js</code><br><small style="color:var(--muted)">assets/js/script.js</small></td>
+  <td><code>displayTime()</code><br><small style="color:var(--muted)">assets/js/script.js</small><br><code>hideCards()</code><br><small style="color:var(--muted)">assets/js/script.js</small><br><code>renderLeaderboard()</code><br><small style="color:var(--muted)">assets/js/script.js</small></td>
+  <td>showLeaderboard() node in assets/js/script.js.</td>
+</tr>
+<tr>
+  <td>11</td>
+  <td><code>startQuiz()</code><br><small style="color:var(--muted)">assets/js/script.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>script.js</code><br><small style="color:var(--muted)">assets/js/script.js</small></td>
+  <td><code>countdown()</code><br><small style="color:var(--muted)">assets/js/script.js</small><br><code>displayQuestion()</code><br><small style="color:var(--muted)">assets/js/script.js</small><br><code>displayTime()</code><br><small style="color:var(--muted)">assets/js/script.js</small><br>+1 more</td>
+  <td>startQuiz() node in assets/js/script.js.</td>
+</tr>
+</table>
+
+<div class="grid">
+  <div class="card">
+    <h4>Key Files</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><th>File</th><th>Coverage</th></tr>
+      <tr><td><code>assets/js/script.js</code></td><td>11 nodes</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Design Notes</h4>
+    <p>This section comes from graphify community clustering. Relationship summary: calls x13, indirect call x2. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+  </div>
+</div>
+<hr>
+
+<!-- ====== 5. Expandir 2026 Conteudo ====== -->
+<h2 id="expandir-2026-conteudo">5. Expandir 2026 Conteudo</h2>
+<p>Expandir 2026 Conteudo groups implementation around expandir, 2026, conteudo, designmd, mostly in !superpowers/specs/2026-08-13-expandir-conteudo-design.md. This section covers 7 nodes and 6 internal edges; the diagram shows only representative relationships to stay readable.</p>
+
+<div class="mermaid">
+%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
+flowchart LR
+    %% Section: Expandir 2026 Conteudo (7 nodes, 6 edges)
+    superpowers_specs_2026_08_13_expandir_conteudo_d_fa0be25e("Expandir conteúdo do AFRIC.Fauna<br/><small>!superpowers/specs/2026-08-13-expandir-conteudo-design.md</small>")
+    superpowers_specs_2026_08_13_expandir_conteudo_d_a90e34fd("2026-08-13-expandir-conteudo-design.md")
+    superpowers_specs_2026_08_13_expandir_conteudo_d_cb3d245f("Objetivo<br/><small>!superpowers/specs/2026-08-13-expandir-conteudo-design.md</small>")
+    superpowers_specs_2026_08_13_expandir_conteudo_d_305ddaca("Abordagem<br/><small>!superpowers/specs/2026-08-13-expandir-conteudo-design.md</small>")
+    superpowers_specs_2026_08_13_expandir_conteudo_d_97f72a26("Mudanças<br/><small>!superpowers/specs/2026-08-13-expandir-conteudo-design.md</small>")
+    superpowers_specs_2026_08_13_expandir_conteudo_d_27132216("Fora de escopo<br/><small>!superpowers/specs/2026-08-13-expandir-conteudo-design.md</small>")
+    superpowers_specs_2026_08_13_expandir_conteudo_d_dedb7c4a("Contexto<br/><small>!superpowers/specs/2026-08-13-expandir-conteudo-design.md</small>")
+    superpowers_specs_2026_08_13_expandir_conteudo_d_a90e34fd -->|contains| superpowers_specs_2026_08_13_expandir_conteudo_d_fa0be25e
+    superpowers_specs_2026_08_13_expandir_conteudo_d_fa0be25e -->|contains| superpowers_specs_2026_08_13_expandir_conteudo_d_cb3d245f
+    superpowers_specs_2026_08_13_expandir_conteudo_d_fa0be25e -->|contains| superpowers_specs_2026_08_13_expandir_conteudo_d_305ddaca
+    superpowers_specs_2026_08_13_expandir_conteudo_d_fa0be25e -->|contains| superpowers_specs_2026_08_13_expandir_conteudo_d_97f72a26
+    superpowers_specs_2026_08_13_expandir_conteudo_d_fa0be25e -->|contains| superpowers_specs_2026_08_13_expandir_conteudo_d_27132216
+    superpowers_specs_2026_08_13_expandir_conteudo_d_fa0be25e -->|contains| superpowers_specs_2026_08_13_expandir_conteudo_d_dedb7c4a
+    class superpowers_specs_2026_08_13_expandir_conteudo_d_fa0be25e concept;
+    class superpowers_specs_2026_08_13_expandir_conteudo_d_a90e34fd concept;
+    class superpowers_specs_2026_08_13_expandir_conteudo_d_cb3d245f concept;
+    class superpowers_specs_2026_08_13_expandir_conteudo_d_305ddaca concept;
+    class superpowers_specs_2026_08_13_expandir_conteudo_d_97f72a26 concept;
+    class superpowers_specs_2026_08_13_expandir_conteudo_d_27132216 concept;
+    class superpowers_specs_2026_08_13_expandir_conteudo_d_dedb7c4a concept;
+    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
+    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
+    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
+    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
+    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
+    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
+    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
+    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
+    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
+</div>
+
+<h3>Call Details</h3>
+<table class="call-table">
+<tr>
+  <th style="width:5%">#</th>
+  <th style="width:28%">Node</th>
+  <th style="width:10%">Type</th>
+  <th style="width:17%">Caller</th>
+  <th style="width:20%">Callees</th>
+  <th style="width:20%">Description</th>
+</tr>
+<tr>
+  <td>1</td>
+  <td><code>2026-08-13-expandir-conteudo-design.md</code><br><small style="color:var(--muted)">!superpowers/specs/2026-08-13-expandir-conteudo-design.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing 2026-08-13-expandir-conteudo-design.md.</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>Abordagem</code><br><small style="color:var(--muted)">!superpowers/specs/2026-08-13-expandir-conteudo-design.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Abordagem.</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td><code>Contexto</code><br><small style="color:var(--muted)">!superpowers/specs/2026-08-13-expandir-conteudo-design.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Contexto.</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td><code>Expandir conteúdo do AFRIC.Fauna</code><br><small style="color:var(--muted)">!superpowers/specs/2026-08-13-expandir-conteudo-design.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Expandir conteúdo do AFRIC.Fauna.</td>
+</tr>
+<tr>
+  <td>5</td>
+  <td><code>Fora de escopo</code><br><small style="color:var(--muted)">!superpowers/specs/2026-08-13-expandir-conteudo-design.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Fora de escopo.</td>
+</tr>
+<tr>
+  <td>6</td>
+  <td><code>Mudanças</code><br><small style="color:var(--muted)">!superpowers/specs/2026-08-13-expandir-conteudo-design.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Mudanças.</td>
+</tr>
+<tr>
+  <td>7</td>
+  <td><code>Objetivo</code><br><small style="color:var(--muted)">!superpowers/specs/2026-08-13-expandir-conteudo-design.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Objetivo.</td>
+</tr>
+</table>
+
+<div class="grid">
+  <div class="card">
+    <h4>Key Files</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><th>File</th><th>Coverage</th></tr>
+      <tr><td><code>!superpowers/specs/2026-08-13-expandir-conteudo-design.md</code></td><td>7 nodes</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Design Notes</h4>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x6. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+  </div>
+</div>
+<hr>
+
+<!-- ====== 6. Quiz Jimbongo Assets ====== -->
+<h2 id="quiz-jimbongo-assets-8dfef2">6. Quiz Jimbongo Assets</h2>
+<p>Quiz Jimbongo Assets groups implementation around quiz, jimbongo, assets, scriptjs, mostly in assets/js/script.js. This section covers 6 nodes and 6 internal edges; the diagram shows only representative relationships to stay readable.</p>
+
+<div class="mermaid">
+%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
+flowchart LR
+    %% Section: Quiz Jimbongo Assets (6 nodes, 6 edges)
+    quiz_jimbongo_assets_js_script_storescore_bbb2c0e3("storeScore()<br/><small>assets/js/script.js</small>")
+    quiz_jimbongo_assets_js_script_clearhighscores_25998c73("clearHighscores()<br/><small>assets/js/script.js</small>")
+    quiz_jimbongo_assets_js_script_sortleaderboard_70471def("sortLeaderboard()<br/><small>assets/js/script.js</small>")
+    quiz_jimbongo_assets_js_script_updatestoredleade_582da8ed("updateStoredLeaderboard()<br/><small>assets/js/script.js</small>")
+    quiz_jimbongo_assets_js_script_renderleaderboard_f5e04e61("renderLeaderboard()<br/><small>assets/js/script.js</small>")
+    quiz_jimbongo_assets_js_script_getleaderboard_71b1f99e("getLeaderboard()<br/><small>assets/js/script.js</small>")
+    quiz_jimbongo_assets_js_script_clearhighscores_25998c73 -->|calls| quiz_jimbongo_assets_js_script_renderleaderboard_f5e04e61
+    quiz_jimbongo_assets_js_script_renderleaderboard_f5e04e61 -->|calls| quiz_jimbongo_assets_js_script_sortleaderboard_70471def
+    quiz_jimbongo_assets_js_script_sortleaderboard_70471def -->|calls| quiz_jimbongo_assets_js_script_getleaderboard_71b1f99e
+    quiz_jimbongo_assets_js_script_storescore_bbb2c0e3 -->|calls| quiz_jimbongo_assets_js_script_updatestoredleade_582da8ed
+    quiz_jimbongo_assets_js_script_storescore_bbb2c0e3 -->|calls| quiz_jimbongo_assets_js_script_renderleaderboard_f5e04e61
+    quiz_jimbongo_assets_js_script_updatestoredleade_582da8ed -->|calls| quiz_jimbongo_assets_js_script_getleaderboard_71b1f99e
+    class quiz_jimbongo_assets_js_script_storescore_bbb2c0e3 ui;
+    class quiz_jimbongo_assets_js_script_clearhighscores_25998c73 function;
+    class quiz_jimbongo_assets_js_script_sortleaderboard_70471def function;
+    class quiz_jimbongo_assets_js_script_updatestoredleade_582da8ed ui;
+    class quiz_jimbongo_assets_js_script_renderleaderboard_f5e04e61 function;
+    class quiz_jimbongo_assets_js_script_getleaderboard_71b1f99e function;
+    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
+    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
+    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
+    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
+    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
+    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
+    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
+    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
+    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
+</div>
+
+<h3>Call Details</h3>
+<table class="call-table">
+<tr>
+  <th style="width:5%">#</th>
+  <th style="width:28%">Node</th>
+  <th style="width:10%">Type</th>
+  <th style="width:17%">Caller</th>
+  <th style="width:20%">Callees</th>
+  <th style="width:20%">Description</th>
+</tr>
+<tr>
+  <td>1</td>
+  <td><code>clearHighscores()</code><br><small style="color:var(--muted)">assets/js/script.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>script.js</code><br><small style="color:var(--muted)">assets/js/script.js</small></td>
+  <td><code>renderLeaderboard()</code><br><small style="color:var(--muted)">assets/js/script.js</small></td>
+  <td>clearHighscores() node in assets/js/script.js.</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>getLeaderboard()</code><br><small style="color:var(--muted)">assets/js/script.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>sortLeaderboard()</code><br><small style="color:var(--muted)">assets/js/script.js</small><br><code>updateStoredLeaderboard()</code><br><small style="color:var(--muted)">assets/js/script.js</small></td>
+  <td>No direct outbound edge</td>
+  <td>getLeaderboard() node in assets/js/script.js.</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td><code>renderLeaderboard()</code><br><small style="color:var(--muted)">assets/js/script.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>clearHighscores()</code><br><small style="color:var(--muted)">assets/js/script.js</small><br><code>showLeaderboard()</code><br><small style="color:var(--muted)">assets/js/script.js</small><br><code>storeScore()</code><br><small style="color:var(--muted)">assets/js/script.js</small></td>
+  <td><code>sortLeaderboard()</code><br><small style="color:var(--muted)">assets/js/script.js</small></td>
+  <td>renderLeaderboard() node in assets/js/script.js.</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td><code>sortLeaderboard()</code><br><small style="color:var(--muted)">assets/js/script.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>renderLeaderboard()</code><br><small style="color:var(--muted)">assets/js/script.js</small></td>
+  <td><code>getLeaderboard()</code><br><small style="color:var(--muted)">assets/js/script.js</small></td>
+  <td>sortLeaderboard() node in assets/js/script.js.</td>
+</tr>
+<tr>
+  <td>5</td>
+  <td><code>storeScore()</code><br><small style="color:var(--muted)">assets/js/script.js</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>script.js</code><br><small style="color:var(--muted)">assets/js/script.js</small></td>
+  <td><code>hideCards()</code><br><small style="color:var(--muted)">assets/js/script.js</small><br><code>renderLeaderboard()</code><br><small style="color:var(--muted)">assets/js/script.js</small><br><code>updateStoredLeaderboard()</code><br><small style="color:var(--muted)">assets/js/script.js</small></td>
+  <td>storeScore() node in assets/js/script.js.</td>
+</tr>
+<tr>
+  <td>6</td>
+  <td><code>updateStoredLeaderboard()</code><br><small style="color:var(--muted)">assets/js/script.js</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>storeScore()</code><br><small style="color:var(--muted)">assets/js/script.js</small></td>
+  <td><code>getLeaderboard()</code><br><small style="color:var(--muted)">assets/js/script.js</small></td>
+  <td>Verifies imports, entry points, or version behavior.</td>
+</tr>
+</table>
+
+<div class="grid">
+  <div class="card">
+    <h4>Key Files</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><th>File</th><th>Coverage</th></tr>
+      <tr><td><code>assets/js/script.js</code></td><td>6 nodes</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Design Notes</h4>
+    <p>This section comes from graphify community clustering. Relationship summary: calls x6. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+  </div>
+</div>
+<hr>
+
+<!-- ====== 7. Dadosjs Dados ====== -->
+<h2 id="dadosjs-dados">7. Dadosjs Dados</h2>
+<p>Dadosjs Dados groups implementation around dadosjs, dados, mostly in dados.js. This section covers 2 nodes and 1 internal edges; the diagram shows only representative relationships to stay readable.</p>
+
+<div class="mermaid">
+%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
+flowchart LR
+    %% Section: Dadosjs Dados (2 nodes, 1 edges)
+    dados_d0e380c0("dados.js")
+    dados_dados_ef3de749("dados<br/><small>dados.js</small>")
+    dados_d0e380c0 -->|contains| dados_dados_ef3de749
+    class dados_d0e380c0 module;
+    class dados_dados_ef3de749 function;
+    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
+    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
+    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
+    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
+    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
+    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
+    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
+    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
+    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
+</div>
+
+<h3>Call Details</h3>
+<table class="call-table">
+<tr>
+  <th style="width:5%">#</th>
+  <th style="width:28%">Node</th>
+  <th style="width:10%">Type</th>
+  <th style="width:17%">Caller</th>
+  <th style="width:20%">Callees</th>
+  <th style="width:20%">Description</th>
+</tr>
+<tr>
+  <td>1</td>
+  <td><code>dados.js</code><br><small style="color:var(--muted)">dados.js</small></td>
+  <td><span class="tag tag-class">Module</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>dados.js node in dados.js.</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>dados</code><br><small style="color:var(--muted)">dados.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>dados node in dados.js.</td>
+</tr>
+</table>
+
+<div class="grid">
+  <div class="card">
+    <h4>Key Files</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><th>File</th><th>Coverage</th></tr>
+      <tr><td><code>dados.js</code></td><td>2 nodes</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Design Notes</h4>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x1. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+  </div>
+</div>
+<hr>
+
+<!-- ====== 8. Mapas Blobsjs Updatedata ====== -->
+<h2 id="mapas-blobsjs-updatedata">8. Mapas Blobsjs Updatedata</h2>
+<p>Mapas Blobsjs Updatedata groups implementation around mapas, blobsjs, updatedata, mostly in mapas/Blobs.js. This section covers 2 nodes and 1 internal edges; the diagram shows only representative relationships to stay readable.</p>
+
+<div class="mermaid">
+%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
+flowchart LR
+    %% Section: Mapas Blobsjs Updatedata (2 nodes, 1 edges)
+    mapas_blobs_fdda826f("Blobs.js")
+    mapas_blobs_updatedata_f63a7a11("updateData()<br/><small>mapas/Blobs.js</small>")
+    mapas_blobs_fdda826f -->|contains| mapas_blobs_updatedata_f63a7a11
+    class mapas_blobs_fdda826f module;
+    class mapas_blobs_updatedata_f63a7a11 function;
+    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
+    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
+    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
+    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
+    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
+    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
+    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
+    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
+    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
+</div>
+
+<h3>Call Details</h3>
+<table class="call-table">
+<tr>
+  <th style="width:5%">#</th>
+  <th style="width:28%">Node</th>
+  <th style="width:10%">Type</th>
+  <th style="width:17%">Caller</th>
+  <th style="width:20%">Callees</th>
+  <th style="width:20%">Description</th>
+</tr>
+<tr>
+  <td>1</td>
+  <td><code>updateData()</code><br><small style="color:var(--muted)">mapas/Blobs.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>updateData() node in mapas/Blobs.js.</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>mapas/Blobs.js</code><br><small style="color:var(--muted)">mapas/Blobs.js</small></td>
+  <td><span class="tag tag-class">Module</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>mapas/Blobs.js node in mapas/Blobs.js.</td>
+</tr>
+</table>
+
+<div class="grid">
+  <div class="card">
+    <h4>Key Files</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><th>File</th><th>Coverage</th></tr>
+      <tr><td><code>mapas/Blobs.js</code></td><td>2 nodes</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Design Notes</h4>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x1. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+  </div>
+</div>
+<hr>
+
+<!-- ====== 9. Bolhas67 Blobsjs Mapas ====== -->
+<h2 id="bolhas67-blobsjs-mapas">9. Bolhas67 Blobsjs Mapas</h2>
+<p>Bolhas67 Blobsjs Mapas groups implementation around bolhas67, blobsjs, mapas, updatedata, mostly in mapas/Bolhas67/Blobs.js. This section covers 2 nodes and 1 internal edges; the diagram shows only representative relationships to stay readable.</p>
+
+<div class="mermaid">
+%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
+flowchart LR
+    %% Section: Bolhas67 Blobsjs Mapas (2 nodes, 1 edges)
+    mapas_bolhas67_blobs_8d9b9e58("Blobs.js")
+    mapas_bolhas67_blobs_updatedata_1b236bc8("updateData()<br/><small>mapas/Bolhas67/Blobs.js</small>")
+    mapas_bolhas67_blobs_8d9b9e58 -->|contains| mapas_bolhas67_blobs_updatedata_1b236bc8
+    class mapas_bolhas67_blobs_8d9b9e58 klass;
+    class mapas_bolhas67_blobs_updatedata_1b236bc8 function;
+    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
+    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
+    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
+    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
+    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
+    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
+    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
+    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
+    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
+</div>
+
+<h3>Call Details</h3>
+<table class="call-table">
+<tr>
+  <th style="width:5%">#</th>
+  <th style="width:28%">Node</th>
+  <th style="width:10%">Type</th>
+  <th style="width:17%">Caller</th>
+  <th style="width:20%">Callees</th>
+  <th style="width:20%">Description</th>
+</tr>
+<tr>
+  <td>1</td>
+  <td><code>updateData()</code><br><small style="color:var(--muted)">mapas/Bolhas67/Blobs.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>updateData() node in mapas/Bolhas67/Blobs.js.</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>Bolhas67/Blobs.js</code><br><small style="color:var(--muted)">mapas/Bolhas67/Blobs.js</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Bolhas67/Blobs.js node in mapas/Bolhas67/Blobs.js.</td>
+</tr>
+</table>
+
+<div class="grid">
+  <div class="card">
+    <h4>Key Files</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><th>File</th><th>Coverage</th></tr>
+      <tr><td><code>mapas/Bolhas67/Blobs.js</code></td><td>2 nodes</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Design Notes</h4>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x1. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+  </div>
+</div>
+<hr>
+
+<!-- ====== 10. Country Appjs Mapas ====== -->
+<h2 id="country-appjs-mapas">10. Country Appjs Mapas</h2>
+<p>Country Appjs Mapas groups implementation around country, appjs, mapas, selectcountry, mostly in mapas/country/app.js. This section covers 2 nodes and 1 internal edges; the diagram shows only representative relationships to stay readable.</p>
+
+<div class="mermaid">
+%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
+flowchart LR
+    %% Section: Country Appjs Mapas (2 nodes, 1 edges)
+    mapas_country_app_cda7b4d8("app.js")
+    mapas_country_app_selectcountry_2572717c("selectCountry()<br/><small>mapas/country/app.js</small>")
+    mapas_country_app_cda7b4d8 -->|contains| mapas_country_app_selectcountry_2572717c
+    class mapas_country_app_cda7b4d8 module;
+    class mapas_country_app_selectcountry_2572717c function;
+    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
+    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
+    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
+    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
+    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
+    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
+    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
+    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
+    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
+</div>
+
+<h3>Call Details</h3>
+<table class="call-table">
+<tr>
+  <th style="width:5%">#</th>
+  <th style="width:28%">Node</th>
+  <th style="width:10%">Type</th>
+  <th style="width:17%">Caller</th>
+  <th style="width:20%">Callees</th>
+  <th style="width:20%">Description</th>
+</tr>
+<tr>
+  <td>1</td>
+  <td><code>selectCountry()</code><br><small style="color:var(--muted)">mapas/country/app.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>selectCountry() node in mapas/country/app.js.</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>country/app.js</code><br><small style="color:var(--muted)">mapas/country/app.js</small></td>
+  <td><span class="tag tag-class">Module</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>country/app.js node in mapas/country/app.js.</td>
+</tr>
+</table>
+
+<div class="grid">
+  <div class="card">
+    <h4>Key Files</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><th>File</th><th>Coverage</th></tr>
+      <tr><td><code>mapas/country/app.js</code></td><td>2 nodes</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Design Notes</h4>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x1. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+  </div>
+</div>
+<hr>
+
+<!-- ====== 11. Readmemd Africfauna ====== -->
+<h2 id="readmemd-africfauna">11. Readmemd Africfauna</h2>
+<p>Readmemd Africfauna groups implementation around readmemd, africfauna, mostly in README.md. This section covers 2 nodes and 1 internal edges; the diagram shows only representative relationships to stay readable.</p>
+
+<div class="mermaid">
+%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
+flowchart LR
+    %% Section: Readmemd Africfauna (2 nodes, 1 edges)
+    readme_f78a71af("README.md")
+    readme_afric_fauna_6cfd14b8("AFRIC.Fauna<br/><small>README.md</small>")
+    readme_f78a71af -->|contains| readme_afric_fauna_6cfd14b8
+    class readme_f78a71af concept;
+    class readme_afric_fauna_6cfd14b8 concept;
+    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
+    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
+    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
+    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
+    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
+    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
+    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
+    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
+    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
+</div>
+
+<h3>Call Details</h3>
+<table class="call-table">
+<tr>
+  <th style="width:5%">#</th>
+  <th style="width:28%">Node</th>
+  <th style="width:10%">Type</th>
+  <th style="width:17%">Caller</th>
+  <th style="width:20%">Callees</th>
+  <th style="width:20%">Description</th>
+</tr>
+<tr>
+  <td>1</td>
+  <td><code>README.md</code><br><small style="color:var(--muted)">README.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing README.md.</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>AFRIC.Fauna</code><br><small style="color:var(--muted)">README.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing AFRIC.Fauna.</td>
+</tr>
+</table>
+
+<div class="grid">
+  <div class="card">
+    <h4>Key Files</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><th>File</th><th>Coverage</th></tr>
+      <tr><td><code>README.md</code></td><td>2 nodes</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Design Notes</h4>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x1. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+  </div>
+</div>
+<hr>
+
+<!-- ====== 12. Bubbles Appjs Mapas ====== -->
+<h2 id="bubbles-appjs-mapas">12. Bubbles Appjs Mapas</h2>
+<p>Bubbles Appjs Mapas groups implementation around bubbles, appjs, mapas, mostly in mapas/Bubbles/app.js. This section covers 1 nodes and 0 internal edges; the diagram shows only representative relationships to stay readable.</p>
+
+<div class="mermaid">
+%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
+flowchart LR
+    %% Section: Bubbles Appjs Mapas (1 nodes, 0 edges)
+    mapas_bubbles_app_6fdca7e3("app.js")
+    class mapas_bubbles_app_6fdca7e3 klass;
+    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
+    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
+    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
+    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
+    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
+    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
+    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
+    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
+    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
+</div>
+
+<h3>Call Details</h3>
+<table class="call-table">
+<tr>
+  <th style="width:5%">#</th>
+  <th style="width:28%">Node</th>
+  <th style="width:10%">Type</th>
+  <th style="width:17%">Caller</th>
+  <th style="width:20%">Callees</th>
+  <th style="width:20%">Description</th>
+</tr>
+<tr>
+  <td>1</td>
+  <td><code>Bubbles/app.js</code><br><small style="color:var(--muted)">mapas/Bubbles/app.js</small></td>
+  <td><span class="tag tag-class">Class</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Bubbles/app.js node in mapas/Bubbles/app.js.</td>
+</tr>
+</table>
+
+<div class="grid">
+  <div class="card">
+    <h4>Key Files</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><th>File</th><th>Coverage</th></tr>
+      <tr><td><code>mapas/Bubbles/app.js</code></td><td>1 nodes</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Design Notes</h4>
+    <p>This section comes from graphify community clustering. Relationship summary: No high-confidence call edges detected. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+  </div>
+</div>
+<hr>
+
+<!-- ====== 13. Glob Appjs Mapas ====== -->
+<h2 id="glob-appjs-mapas">13. Glob Appjs Mapas</h2>
+<p>Glob Appjs Mapas groups implementation around glob, appjs, mapas, mostly in mapas/glob/app.js. This section covers 1 nodes and 0 internal edges; the diagram shows only representative relationships to stay readable.</p>
+
+<div class="mermaid">
+%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
+flowchart LR
+    %% Section: Glob Appjs Mapas (1 nodes, 0 edges)
+    mapas_glob_app_08d3d01a("app.js")
+    class mapas_glob_app_08d3d01a module;
+    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
+    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
+    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
+    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
+    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
+    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
+    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
+    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
+    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
+</div>
+
+<h3>Call Details</h3>
+<table class="call-table">
+<tr>
+  <th style="width:5%">#</th>
+  <th style="width:28%">Node</th>
+  <th style="width:10%">Type</th>
+  <th style="width:17%">Caller</th>
+  <th style="width:20%">Callees</th>
+  <th style="width:20%">Description</th>
+</tr>
+<tr>
+  <td>1</td>
+  <td><code>glob/app.js</code><br><small style="color:var(--muted)">mapas/glob/app.js</small></td>
+  <td><span class="tag tag-class">Module</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>glob/app.js node in mapas/glob/app.js.</td>
+</tr>
+</table>
+
+<div class="grid">
+  <div class="card">
+    <h4>Key Files</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><th>File</th><th>Coverage</th></tr>
+      <tr><td><code>mapas/glob/app.js</code></td><td>1 nodes</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Design Notes</h4>
+    <p>This section comes from graphify community clustering. Relationship summary: No high-confidence call edges detected. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+  </div>
+</div>
+<hr>
+
+<!-- ====== 14. Select Appjs Mapas ====== -->
+<h2 id="select-appjs-mapas">14. Select Appjs Mapas</h2>
+<p>Select Appjs Mapas groups implementation around select, appjs, mapas, mostly in mapas/select/app.js. This section covers 1 nodes and 0 internal edges; the diagram shows only representative relationships to stay readable.</p>
+
+<div class="mermaid">
+%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
+flowchart LR
+    %% Section: Select Appjs Mapas (1 nodes, 0 edges)
+    mapas_select_app_f73b029c("app.js")
+    class mapas_select_app_f73b029c module;
+    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
+    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
+    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
+    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
+    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
+    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
+    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
+    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
+    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
+</div>
+
+<h3>Call Details</h3>
+<table class="call-table">
+<tr>
+  <th style="width:5%">#</th>
+  <th style="width:28%">Node</th>
+  <th style="width:10%">Type</th>
+  <th style="width:17%">Caller</th>
+  <th style="width:20%">Callees</th>
+  <th style="width:20%">Description</th>
+</tr>
+<tr>
+  <td>1</td>
+  <td><code>select/app.js</code><br><small style="color:var(--muted)">mapas/select/app.js</small></td>
+  <td><span class="tag tag-class">Module</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>select/app.js node in mapas/select/app.js.</td>
+</tr>
+</table>
+
+<div class="grid">
+  <div class="card">
+    <h4>Key Files</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><th>File</th><th>Coverage</th></tr>
+      <tr><td><code>mapas/select/app.js</code></td><td>1 nodes</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Design Notes</h4>
+    <p>This section comes from graphify community clustering. Relationship summary: No high-confidence call edges detected. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+  </div>
+</div>
+<hr>
+
+<!-- ====== 15. Zoom Appjs Mapas ====== -->
+<h2 id="zoom-appjs-mapas">15. Zoom Appjs Mapas</h2>
+<p>Zoom Appjs Mapas groups implementation around zoom, appjs, mapas, mostly in mapas/zoom/app.js. This section covers 1 nodes and 0 internal edges; the diagram shows only representative relationships to stay readable.</p>
+
+<div class="mermaid">
+%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
+flowchart LR
+    %% Section: Zoom Appjs Mapas (1 nodes, 0 edges)
+    mapas_zoom_app_5f49f5b9("app.js")
+    class mapas_zoom_app_5f49f5b9 module;
+    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
+    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
+    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
+    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
+    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
+    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
+    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
+    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
+    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
+</div>
+
+<h3>Call Details</h3>
+<table class="call-table">
+<tr>
+  <th style="width:5%">#</th>
+  <th style="width:28%">Node</th>
+  <th style="width:10%">Type</th>
+  <th style="width:17%">Caller</th>
+  <th style="width:20%">Callees</th>
+  <th style="width:20%">Description</th>
+</tr>
+<tr>
+  <td>1</td>
+  <td><code>zoom/app.js</code><br><small style="color:var(--muted)">mapas/zoom/app.js</small></td>
+  <td><span class="tag tag-class">Module</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>zoom/app.js node in mapas/zoom/app.js.</td>
+</tr>
+</table>
+
+<div class="grid">
+  <div class="card">
+    <h4>Key Files</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><th>File</th><th>Coverage</th></tr>
+      <tr><td><code>mapas/zoom/app.js</code></td><td>1 nodes</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Design Notes</h4>
+    <p>This section comes from graphify community clustering. Relationship summary: No high-confidence call edges detected. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+  </div>
+</div>
+<hr>
+
+<h2 id="stats">Project Statistics</h2>
+
+<div class="grid">
+  <div class="card">
+    <h4>Graph</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><td>Nodes</td><td>68</td></tr>
+      <tr><td>Edges</td><td>79</td></tr>
+      <tr><td>Hyperedges</td><td>0</td></tr>
+      <tr><td>Communities</td><td>14</td></tr>
+      <tr><td>Documented Sections</td><td>14</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Edge Confidence</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><td>EXTRACTED</td><td>70</td></tr>
+      <tr><td>INFERRED</td><td>9</td></tr>
+      <tr><td>AMBIGUOUS</td><td>0</td></tr>
+    </table>
+  </div>
+</div>
+
+<div style="text-align:center; padding:40px 0; color: var(--muted); font-size:0.9rem;">
+  <p>Afric.Fauna — Architecture Documentation</p>
+  <p>Generated: 2026-10-28 06:31 UTC · graphify callflow-html</p>
+</div>
+
+</div><!-- .container -->
+
+<script>
+(function () {
+  const mermaidConfig = {
+    startOnLoad: false,
+    theme: 'dark',
+    securityLevel: 'loose',
+    flowchart: { htmlLabels: true, useMaxWidth: true },
+    themeVariables: {
+      primaryColor: '#1e293b',
+      primaryTextColor: '#e2e8f0',
+      primaryBorderColor: '#38bdf8',
+      secondaryColor: '#0f172a',
+      tertiaryColor: '#334155',
+      lineColor: '#64748b',
+      textColor: '#e2e8f0',
+    }
+  };
+
+  mermaid.initialize(mermaidConfig);
+
+  function clamp(value, min, max) {
+    return Math.min(max, Math.max(min, value));
+  }
+
+  function enhanceMermaidDiagrams() {
+    document.querySelectorAll('.mermaid').forEach((container) => {
+      if (container.dataset.zoomReady === 'true') return;
+      const svg = container.querySelector('svg');
+      if (!svg) return;
+
+      container.dataset.zoomReady = 'true';
+      container.classList.add('is-enhanced');
+
+      const viewport = document.createElement('div');
+      viewport.className = 'mermaid-viewport';
+      svg.parentNode.insertBefore(viewport, svg);
+      viewport.appendChild(svg);
+
+      const toolbar = document.createElement('div');
+      toolbar.className = 'mermaid-toolbar';
+      toolbar.innerHTML = [
+        '<button type="button" data-action="zoom-out" title="Zoom out">-</button>',
+        '<span class="zoom-level" data-role="level">100%</span>',
+        '<button type="button" data-action="zoom-in" title="Zoom in">+</button>',
+        '<button type="button" data-action="fit" title="Fit width">Fit</button>',
+        '<button type="button" data-action="reset" title="Reset view">Reset</button>'
+      ].join('');
+      container.insertBefore(toolbar, viewport);
+
+      const state = { scale: 1, x: 0, y: 0, dragging: false, startX: 0, startY: 0, originX: 0, originY: 0 };
+      const level = toolbar.querySelector('[data-role="level"]');
+
+      function applyTransform() {
+        svg.style.transform = `translate(${state.x}px, ${state.y}px) scale(${state.scale})`;
+        level.textContent = `${Math.round(state.scale * 100)}%`;
+      }
+
+      function zoomBy(delta) {
+        state.scale = clamp(state.scale + delta, 0.25, 3);
+        applyTransform();
+      }
+
+      function reset() {
+        state.scale = 1;
+        state.x = 0;
+        state.y = 0;
+        applyTransform();
+      }
+
+      function fitWidth() {
+        const rawWidth = svg.viewBox && svg.viewBox.baseVal && svg.viewBox.baseVal.width
+          ? svg.viewBox.baseVal.width
+          : svg.getBoundingClientRect().width / state.scale;
+        if (!rawWidth) {
+          reset();
+          return;
+        }
+        state.scale = clamp((viewport.clientWidth - 48) / rawWidth, 0.25, 1.4);
+        state.x = 0;
+        state.y = 0;
+        applyTransform();
+      }
+
+      toolbar.addEventListener('click', (event) => {
+        const button = event.target.closest('button[data-action]');
+        if (!button) return;
+        const action = button.dataset.action;
+        if (action === 'zoom-in') zoomBy(0.15);
+        if (action === 'zoom-out') zoomBy(-0.15);
+        if (action === 'fit') fitWidth();
+        if (action === 'reset') reset();
+      });
+
+      viewport.addEventListener('wheel', (event) => {
+        if (!event.ctrlKey && !event.metaKey) return;
+        event.preventDefault();
+        zoomBy(event.deltaY < 0 ? 0.1 : -0.1);
+      }, { passive: false });
+
+      viewport.addEventListener('pointerdown', (event) => {
+        if (event.button !== 0) return;
+        state.dragging = true;
+        state.startX = event.clientX;
+        state.startY = event.clientY;
+        state.originX = state.x;
+        state.originY = state.y;
+        viewport.classList.add('is-dragging');
+        viewport.setPointerCapture(event.pointerId);
+      });
+
+      viewport.addEventListener('pointermove', (event) => {
+        if (!state.dragging) return;
+        state.x = state.originX + event.clientX - state.startX;
+        state.y = state.originY + event.clientY - state.startY;
+        applyTransform();
+      });
+
+      function endDrag(event) {
+        if (!state.dragging) return;
+        state.dragging = false;
+        viewport.classList.remove('is-dragging');
+        if (viewport.hasPointerCapture(event.pointerId)) {
+          viewport.releasePointerCapture(event.pointerId);
+        }
+      }
+
+      viewport.addEventListener('pointerup', endDrag);
+      viewport.addEventListener('pointercancel', endDrag);
+      applyTransform();
+    });
+  }
+
+  function renderMermaid() {
+    const result = mermaid.run
+      ? mermaid.run({ querySelector: '.mermaid' })
+      : Promise.resolve();
+    Promise.resolve(result)
+      .then(enhanceMermaidDiagrams)
+      .catch((error) => {
+        console.error('Mermaid render failed:', error);
+        enhanceMermaidDiagrams();
+      });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', renderMermaid);
+  } else {
+    renderMermaid();
+  }
+})();
+</script>
+
+</body>
+</html>

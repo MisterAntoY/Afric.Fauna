@@ -1,0 +1,200 @@
+{
+  "app.js": {
+    "mtime": 1793169107.0820336,
+    "seen": 1793169108.1501102,
+    "ast_hash": "0ae84ce3cf08e43ea20c4c4b96761cda",
+    "semantic_hash": ""
+  },
+  "dados.js": {
+    "mtime": 1793169107.0860338,
+    "seen": 1793169108.1501231,
+    "ast_hash": "19f19c58627a933a46fdd789e75c63f9",
+    "semantic_hash": ""
+  },
+  "mapas/Blobs.js": {
+    "mtime": 1793169107.0860338,
+    "seen": 1793169108.1501296,
+    "ast_hash": "eb24dd79f0aa5491a0144b9ef9b795c8",
+    "semantic_hash": ""
+  },
+  "mapas/Bolhas67/Blobs.js": {
+    "mtime": 1793169107.0860338,
+    "seen": 1793169108.150135,
+    "ast_hash": "eb24dd79f0aa5491a0144b9ef9b795c8",
+    "semantic_hash": ""
+  },
+  "mapas/Bubbles/app.js": {
+    "mtime": 1793169107.0860338,
+    "seen": 1793169108.1501412,
+    "ast_hash": "48bd01ce18d06797384c00cfff772a7b",
+    "semantic_hash": ""
+  },
+  "mapas/country/app.js": {
+    "mtime": 1793169107.0860338,
+    "seen": 1793169108.1501458,
+    "ast_hash": "d53cb62ad76497cda24032ac8af0f7f7",
+    "semantic_hash": ""
+  },
+  "mapas/glob/app.js": {
+    "mtime": 1793169107.0860338,
+    "seen": 1793169108.150151,
+    "ast_hash": "14fdf62162fce8cec03385cd70f69f52",
+    "semantic_hash": ""
+  },
+  "mapas/select/app.js": {
+    "mtime": 1793169107.0860338,
+    "seen": 1793169108.1501563,
+    "ast_hash": "84ccd84f79d355186b318780ed1c8395",
+    "semantic_hash": ""
+  },
+  "mapas/zoom/app.js": {
+    "mtime": 1793169107.0860338,
+    "seen": 1793169108.1501615,
+    "ast_hash": "ec152145c215153eabd766f79f18d99d",
+    "semantic_hash": ""
+  },
+  "quiz-jimbongo/assets/js/script.js": {
+    "mtime": 1793169107.0900338,
+    "seen": 1793169108.1501653,
+    "ast_hash": "5773f53b823050069d5df85a875a996a",
+    "semantic_hash": ""
+  },
+  "!superpowers/plans/2026-08-13-expandir-conteudo.md": {
+    "mtime": 1793169107.0820336,
+    "seen": 1793169108.1501684,
+    "ast_hash": "ff9347fc3b7746fde25ee804b4c1df83",
+    "semantic_hash": ""
+  },
+  "!superpowers/specs/2026-08-13-expandir-conteudo-design.md": {
+    "mtime": 1793169107.0820336,
+    "seen": 1793169108.1501722,
+    "ast_hash": "b8130bf273c32dfebe1589b01b918cce",
+    "semantic_hash": ""
+  },
+  "README.md": {
+    "mtime": 1793169107.0820336,
+    "seen": 1793169108.1501756,
+    "ast_hash": "6d3946469ad08ece0a2972d224b68ee9",
+    "semantic_hash": ""
+  },
+  "index.html": {
+    "mtime": 1793169107.0860338,
+    "seen": 1793169108.1501782,
+    "ast_hash": "c31a41c739fa27393ef8fb889ed14c0c",
+    "semantic_hash": ""
+  },
+  "mapas/Blobs.html": {
+    "mtime": 1793169107.0860338,
+    "seen": 1793169108.1501815,
+    "ast_hash": "7bbd5f592a9d6bdaf2c474c3725aad5e",
+    "semantic_hash": ""
+  },
+  "mapas/Bolhas67/Blobs.html": {
+    "mtime": 1793169107.0860338,
+    "seen": 1793169108.1501844,
+    "ast_hash": "7bbd5f592a9d6bdaf2c474c3725aad5e",
+    "semantic_hash": ""
+  },
+  "mapas/Bubbles/index.html": {
+    "mtime": 1793169107.0860338,
+    "seen": 1793169108.1501884,
+    "ast_hash": "9bac84a918a1eab66719dccfbe1acb07",
+    "semantic_hash": ""
+  },
+  "mapas/country/index.html": {
+    "mtime": 1793169107.0860338,
+    "seen": 1793169108.1501932,
+    "ast_hash": "9bac84a918a1eab66719dccfbe1acb07",
+    "semantic_hash": ""
+  },
+  "mapas/glob/index.html": {
+    "mtime": 1793169107.0860338,
+    "seen": 1793169108.150197,
+    "ast_hash": "9bac84a918a1eab66719dccfbe1acb07",
+    "semantic_hash": ""
+  },
+  "mapas/select/index.html": {
+    "mtime": 1793169107.0860338,
+    "seen": 1793169108.150219,
+    "ast_hash": "9bac84a918a1eab66719dccfbe1acb07",
+    "semantic_hash": ""
+  },
+  "mapas/teste.html": {
+    "mtime": 1793169107.0860338,
+    "seen": 1793169108.150222,
+    "ast_hash": "1d13428fdbf5a4f94f55cbaca7405d21",
+    "semantic_hash": ""
+  },
+  "mapas/zoom/index.html": {
+    "mtime": 1793169107.0860338,
+    "seen": 1793169108.1502256,
+    "ast_hash": "9bac84a918a1eab66719dccfbe1acb07",
+    "semantic_hash": ""
+  },
+  "quiz-jimbongo/index.html": {
+    "mtime": 1793169107.0900338,
+    "seen": 1793169108.1502314,
+    "ast_hash": "a5e841ecd022b75b0f6dd555a4a040f1",
+    "semantic_hash": ""
+  },
+  "1521432055366.jpeg": {
+    "mtime": 1793169107.0820336,
+    "seen": 1793169108.1502354,
+    "ast_hash": "4b76e9bf51ffab8e427c901357946c45",
+    "semantic_hash": ""
+  },
+  "4568865.jpg": {
+    "mtime": 1793169107.0820336,
+    "seen": 1793169108.1502395,
+    "ast_hash": "35ed4daa1ec7778f9df1cdbddd39c6f1",
+    "semantic_hash": ""
+  },
+  "mapas/region_africaLowWhite.png": {
+    "mtime": 1793169107.0860338,
+    "seen": 1793169108.1502433,
+    "ast_hash": "2420337f25a5c4e0d0656dcd89abe7dc",
+    "semantic_hash": ""
+  },
+  "mapas/region_africaLowWhite.svg": {
+    "mtime": 1793169107.0860338,
+    "seen": 1793169108.1502469,
+    "ast_hash": "a1d6fbeb81887f13decff6d77b8806d7",
+    "semantic_hash": ""
+  },
+  "mapas/region_world_africaLowGreen).png": {
+    "mtime": 1793169107.0860338,
+    "seen": 1793169108.15025,
+    "ast_hash": "8e815f4db1b70949c56079186aa9d27f",
+    "semantic_hash": ""
+  },
+  "mapas/region_world_africaLowGreen.svg": {
+    "mtime": 1793169107.0860338,
+    "seen": 1793169108.150253,
+    "ast_hash": "98e1c331a09b04adaffdb0498ae56b44",
+    "semantic_hash": ""
+  },
+  "quiz-jimbongo/assets/images/highscores.png": {
+    "mtime": 1793169107.0860338,
+    "seen": 1793169108.150256,
+    "ast_hash": "51bf86b30e5b7e3b2bde03f72a6ebda4",
+    "semantic_hash": ""
+  },
+  "quiz-jimbongo/assets/images/question.png": {
+    "mtime": 1793169107.0900338,
+    "seen": 1793169108.1502588,
+    "ast_hash": "7a1aba7c54fd8533eac6e6c626423ec6",
+    "semantic_hash": ""
+  },
+  "quiz-jimbongo/assets/images/scoresheet.png": {
+    "mtime": 1793169107.0900338,
+    "seen": 1793169108.1502614,
+    "ast_hash": "c1772adac16a1787209c7e418f74118b",
+    "semantic_hash": ""
+  },
+  "quiz-jimbongo/assets/images/startcard.png": {
+    "mtime": 1793169107.0900338,
+    "seen": 1793169108.1502645,
+    "ast_hash": "25d4eff931dfba89ee74e9ef88af22ca",
+    "semantic_hash": ""
+  }
+}
