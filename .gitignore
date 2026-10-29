@@ -10,3 +10,8 @@ superpowers
 !docs\superpowers\specs
 # Cache interno do Graphify
 graphify-out/cache/
+
+node_modules
+dist
+*.tsbuildinfo
+.DS_Store
