@@ -4,42 +4,42 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
-    <title>Afric.Fauna</title>
+    <title>Afric.Fauna — Biodiversidade e Conservação da Fauna Africana</title>
 </head>
 <body>
     <header>
-<nav>
-    <button class="menu_geral" id="menuG" aria-expanded="false" aria-controls="menuB">Menu</button>
-    <ul class="menu_itens" id="menuB">
-        <li><a href="species.html">Especies</a></li>
-        <li><a href="quiz-jimbongo/index.html">Quiz</a></li>
-        <li><a href="atlas.html">Atlas</a></li>
-        <li><a href="map.html">Afric Map</a></li>
-        <li><a href="sobre.html">Sobre</a></li>
-    </ul>
-    <div class="menu_overlay" id="menuOverlay"></div>
-</nav>
+        <nav>
+            <button class="menu_geral" id="menuG" aria-expanded="false" aria-controls="menuB">Menu</button>
+            <ul class="menu_itens" id="menuB">
+                <li><a href="species.html">Espécies</a></li>
+                <li><a href="quiz-jimbongo/index.html">Quiz JimBongo</a></li>
+                <li><a href="atlas.html">Atlas</a></li>
+                <li><a href="map.html">Afric Map</a></li>
+                <li><a href="sobre.html">Sobre</a></li>
+                <li><a href="apoie.html" style="color: #FFDD00; font-weight: 700;">Apoiar ☕</a></li>
+            </ul>
+            <div class="menu_overlay" id="menuOverlay"></div>
+        </nav>
         <h1>Animais de África</h1>
-        <button window.location.href = "quiz-jimbongo/index.html">quiz</button>
+        <button onclick="window.location.href = 'quiz-jimbongo/index.html'">Quiz</button>
     </header>
     <main>
         <section>
-         <input type="text" placeholder="Digite o nome do Animal..." id="campo-pesquisa"> 
-         <button onclick="pesquisar()">Pesquisar</button>  
-         </section>
-         <section class="resultados-pesquisa"
-            id= "resultados-pesquisa">
-         </section>
-         <section id="loading" style="display: none;">
+            <input type="text" placeholder="Digite o nome do Animal..." id="campo-pesquisa"> 
+            <button onclick="pesquisar()">Pesquisar</button>  
+        </section>
+        <section class="resultados-pesquisa" id="resultados-pesquisa">
+        </section>
+        <section id="loading" style="display: none;">
             <p>Carregando...</p>
         </section>
-        <section class="error"
-            id= "error">
+        <section class="error" id="error">
         </section>
     </main>
     <footer>
-     <p>2026 - Animais de África. Todos os direitos reservados </p>   
-     <p>Entre em contacto pelo email:mendes.antonio@pricen.ao</p>
+        <p>2026 - Animais de África. Todos os direitos reservados</p>   
+        <p><a href="apoie.html" style="color: #F2622A; text-decoration: none; font-weight: bold;">☕ Apoie este projecto no Buy Me a Coffee</a></p>
+        <p>Entre em contacto pelo email: mendes.antonio@pricen.ao</p>
     </footer>
     <script src="dados.js"></script> 
     <script src="app.js"></script>

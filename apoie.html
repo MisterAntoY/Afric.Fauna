@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apoie o Afric.Fauna — Conservação e Educação da Fauna Africana</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-page: #FFF5EC;
+            --card-bg: #FFFFFF;
+            --primary: #30475E;
+            --accent: #F2622A;
+            --accent-hover: #D94810;
+            --coffee-yellow: #FFDD00;
+            --coffee-dark: #000000;
+            --text-main: #1F2937;
+            --text-muted: #4B5563;
+            --border: #E5E7EB;
+            --green: #10B981;
+        }
+
+        body.apoie-body {
+            background-image: none;
+            background-color: var(--bg-page);
+            font-family: 'Plus Jakarta Sans', 'Chakra Petch', sans-serif;
+            color: var(--text-main);
+            min-height: 100vh;
+            height: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 0;
+            margin: 0;
+        }
+
+        .apoie-header {
+            width: 100%;
+            background: linear-gradient(135deg, #1E293B 0%, #30475E 100%);
+            color: #FFFFFF;
+            padding: 5rem 1.5rem 3.5rem;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+            position: relative;
+        }
+
+        .apoie-header h1 {
+            color: #FFFFFF;
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 2.5rem;
+            margin: 0 0 0.8rem;
+            letter-spacing: 0.15rem;
+        }
+
+        .apoie-tagline {
+            font-size: 1.15rem;
+            color: #E2E8F0;
+            max-width: 680px;
+            margin: 0 auto;
+            line-height: 1.6;
+            font-weight: 400;
+        }
+
+        .apoie-container {
+            width: 100%;
+            max-width: 1100px;
+            margin: -2rem auto 3rem;
+            padding: 0 1.5rem;
+            box-sizing: border-box;
+            z-index: 10;
+        }
+
+        /* Banner de Destaque Buy Me a Coffee */
+        .bmc-hero-card {
+            background: #FFFFFF;
+            border-radius: 1.25rem;
+            padding: 2.2rem 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            border: 2px solid #F3F4F6;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .bmc-badge {
+            background-color: #FEF3C7;
+            color: #92400E;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05rem;
+            padding: 0.35rem 0.9rem;
+            border-radius: 9999px;
+            margin-bottom: 1rem;
+        }
+
+        .bmc-hero-card h2 {
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 1.75rem;
+            letter-spacing: 0.05rem;
+            margin: 0 0 0.8rem;
+            color: #111827;
+        }
+
+        .bmc-hero-card p {
+            color: var(--text-muted);
+            max-width: 620px;
+            line-height: 1.6;
+            margin: 0 0 1.5rem;
+            font-size: 1.05rem;
+        }
+
+        .btn-bmc {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            background-color: var(--coffee-yellow);
+            color: var(--coffee-dark);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 700;
+            font-size: 1.15rem;
+            padding: 1rem 2rem;
+            border-radius: 9999px;
+            text-decoration: none;
+            box-shadow: 0 6px 18px rgba(255, 221, 0, 0.45);
+            transition: all 0.25s ease;
+        }
+
+        .btn-bmc:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 24px rgba(255, 221, 0, 0.6);
+            background-color: #FFE633;
+        }
+
+        .btn-bmc svg {
+            width: 26px;
+            height: 26px;
+        }
+
+        /* Tiers de Apoio */
+        .tiers-title {
+            text-align: center;
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 1.8rem;
+            color: #111827;
+            margin: 2.5rem 0 1.5rem;
+            letter-spacing: 0.05rem;
+        }
+
+        .tiers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .tier-card {
+            background: #FFFFFF;
+            border-radius: 1.25rem;
+            padding: 2rem;
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+        }
+
+        .tier-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+            border-color: var(--accent);
+        }
+
+        .tier-card.featured {
+            border: 2px solid var(--accent);
+            box-shadow: 0 8px 25px rgba(242, 98, 42, 0.12);
+        }
+
+        .featured-pill {
+            position: absolute;
+            top: -12px;
+            right: 24px;
+            background: var(--accent);
+            color: #FFFFFF;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            letter-spacing: 0.05rem;
+        }
+
+        .tier-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .tier-name {
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 1.35rem;
+            margin: 0 0 0.5rem;
+            color: #111827;
+        }
+
+        .tier-price {
+            font-size: 1.65rem;
+            font-weight: 800;
+            color: var(--accent);
+            margin: 0 0 0.75rem;
+        }
+
+        .tier-price span {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        .tier-desc {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.55;
+            margin-bottom: 1.5rem;
+        }
+
+        .tier-btn {
+            display: block;
+            text-align: center;
+            background-color: #F3F4F6;
+            color: #111827;
+            font-weight: 600;
+            padding: 0.8rem 1.2rem;
+            border-radius: 0.75rem;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .tier-card.featured .tier-btn {
+            background-color: var(--accent);
+            color: #FFFFFF;
+        }
+
+        .tier-btn:hover {
+            background-color: #111827;
+            color: #FFFFFF;
+        }
+
+        /* Seção Transparência & Impacto */
+        .impact-section {
+            background: #FFFFFF;
+            border-radius: 1.25rem;
+            padding: 2.5rem 2rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+            margin-bottom: 3rem;
+            border: 1px solid var(--border);
+        }
+
+        .impact-section h2 {
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 1.6rem;
+            color: #111827;
+            margin: 0 0 1.5rem;
+            text-align: left;
+            letter-spacing: 0.05rem;
+        }
+
+        .impact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .impact-item {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+
+        .impact-item-icon {
+            font-size: 2rem;
+            line-height: 1;
+        }
+
+        .impact-item h3 {
+            margin: 0 0 0.35rem;
+            font-size: 1.1rem;
+            color: #111827;
+        }
+
+        .impact-item p {
+            margin: 0;
+            color: var(--text-muted);
+            font-size: 0.92rem;
+            line-height: 1.5;
+        }
+
+        /* Opções Locais (Angola / Multicaixa) */
+        .local-support-box {
+            background: #EFF6FF;
+            border: 1px solid #BFDBFE;
+            border-radius: 1.25rem;
+            padding: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .local-support-box h3 {
+            margin: 0 0 0.5rem;
+            color: #1E3A8A;
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 1.35rem;
+        }
+
+        .local-support-box p {
+            color: #1E40AF;
+            margin: 0 0 1rem;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .iban-field {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            align-items: center;
+            background: #FFFFFF;
+            padding: 0.75rem 1rem;
+            border-radius: 0.75rem;
+            border: 1px solid #93C5FD;
+            font-family: monospace;
+            font-size: 1rem;
+            color: #1E3A8A;
+        }
+
+        .btn-copy {
+            background: #2563EB;
+            color: #FFFFFF;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: background-color 0.2s;
+        }
+
+        .btn-copy:hover {
+            background: #1D4ED8;
+        }
+
+        /* Rodapé Dedicado */
+        .apoie-footer {
+            width: 100%;
+            background-color: #111827;
+            color: #9CA3AF;
+            padding: 2.5rem 1.5rem;
+            text-align: center;
+            font-size: 0.95rem;
+            box-sizing: border-box;
+            margin-top: auto;
+        }
+
+        .apoie-footer p {
+            margin: 0.4rem 0;
+        }
+
+        .apoie-footer a {
+            color: #F3F4F6;
+            text-decoration: underline;
+        }
+
+        @media (max-width: 640px) {
+            .apoie-header h1 {
+                font-size: 1.9rem;
+            }
+            .apoie-header {
+                padding-top: 5rem;
+            }
+            .btn-bmc {
+                width: 100%;
+                justify-content: center;
+                box-sizing: border-box;
+            }
+        }
+    </style>
+</head>
+<body class="apoie-body">
+
+    <!-- Navegação Flutuante Padrão Afric.Fauna -->
+    <header>
+        <nav>
+            <button class="menu_geral" id="menuG" aria-expanded="false" aria-controls="menuB">Menu</button>
+            <ul class="menu_itens" id="menuB">
+                <li><a href="index.html">Início (Pesquisa)</a></li>
+                <li><a href="quiz-jimbongo/index.html">Quiz JimBongo</a></li>
+                <li><a href="apoie.html" style="color: var(--coffee-yellow); font-weight: 700;">Apoiar ☕</a></li>
+            </ul>
+            <div class="menu_overlay" id="menuOverlay"></div>
+        </nav>
+    </header>
+
+    <!-- Topo da Página -->
+    <div class="apoie-header">
+        <h1>Apoie o Afric.Fauna 🌍</h1>
+        <p class="apoie-tagline">
+            Uma plataforma aberta e sem fins lucrativos dedicada a mapear, catalogar e promover a conservação da vida selvagem africana e angolana.
+        </p>
+    </div>
+
+    <!-- Conteúdo Principal -->
+    <main class="apoie-container">
+
+        <!-- Card Principal Buy Me a Coffee -->
+        <section class="bmc-hero-card">
+            <span class="bmc-badge">Financiamento Colectivo Independente</span>
+            <h2>Pague-nos um Café pelo Futuro da Conservação</h2>
+            <p>
+                O Afric.Fauna é desenvolvido e mantido por paixão pela biodiversidade. Cada contribuição ajuda a pagar servidores de mapas, infraestrutura de busca e pesquisas biológicas para estudantes, biólogos e amantes da natureza.
+            </p>
+            <a href="https://buymeacoffee.com/misterantoy" target="_blank" rel="noopener noreferrer" class="btn-bmc">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M20.216 6.415l-.132-.666c-.119-.597-.387-1.144-.775-1.583-.437-.493-.996-.838-1.616-.998C17.068 3.003 15.65 3 12 3S6.932 3.003 6.307 3.168c-.62.16-1.179.505-1.616.998-.388.439-.656.986-.775 1.583L3.784 6.415C2.868 7.377 2.3 8.675 2.3 10.08c0 3.298 2.756 6.136 6.425 6.744.57.095 1.152.148 1.738.163v2.012H8.5c-.828 0-1.5.672-1.5 1.5s.672 1.5 1.5 1.5h7c.828 0 1.5-.672 1.5-1.5s-.672-1.5-1.5-1.5h-1.963v-2.012c.586-.015 1.168-.068 1.738-.163 3.669-.608 6.425-3.446 6.425-6.744 0-1.405-.568-2.703-1.484-3.665zM12 15c-2.481 0-4.5-2.019-4.5-4.5S9.519 6 12 6s4.5 2.019 4.5 4.5S14.481 15 12 15z"/>
+                </svg>
+                Apoiar no Buy Me a Coffee
+            </a>
+        </section>
+
+        <!-- Tiers de Apoio Simbólico -->
+        <h2 class="tiers-title">Escolha o seu Nível de Guardião</h2>
+        <div class="tiers-grid">
+            <!-- Tier 1 -->
+            <div class="tier-card">
+                <div>
+                    <div class="tier-icon">☕</div>
+                    <h3 class="tier-name">Café do Explorador</h3>
+                    <div class="tier-price">$3 <span>/ doação única</span></div>
+                    <p class="tier-desc">
+                        Cobre 1 semana de custos de banda larga e consulta ao catálogo de espécies para novos visitantes e estudantes.
+                    </p>
+                </div>
+                <a href="https://buymeacoffee.com/misterantoy" target="_blank" rel="noopener noreferrer" class="tier-btn">Oferecer 1 Café</a>
+            </div>
+
+            <!-- Tier 2 (Destaque) -->
+            <div class="tier-card featured">
+                <span class="featured-pill">Mais Popular</span>
+                <div>
+                    <div class="tier-icon">🦁</div>
+                    <h3 class="tier-name">Guardião da Savana</h3>
+                    <div class="tier-price">$10 <span>/ apoio</span></div>
+                    <p class="tier-desc">
+                        Financia o processamento de camadas geoespaciais com MapLibre GL e manutenção das rotas de migração animal.
+                    </p>
+                </div>
+                <a href="https://buymeacoffee.com/misterantoy" target="_blank" rel="noopener noreferrer" class="tier-btn">Ser Guardião</a>
+            </div>
+
+            <!-- Tier 3 -->
+            <div class="tier-card">
+                <div>
+                    <div class="tier-icon">🦌</div>
+                    <h3 class="tier-name">Patrono da Palanca Negra</h3>
+                    <div class="tier-price">$25+ <span>/ patrono</span></div>
+                    <p class="tier-desc">
+                        Apoio directo à inclusão de novas espécies em risco crítico e módulos educativos avançados para as escolas.
+                    </p>
+                </div>
+                <a href="https://buymeacoffee.com/misterantoy" target="_blank" rel="noopener noreferrer" class="tier-btn">Tornar-se Patrono</a>
+            </div>
+        </div>
+
+        <!-- Onde é Investido o Apoio -->
+        <section class="impact-section">
+            <h2>Transparência: Para Onde Vai o Seu Apoio?</h2>
+            <div class="impact-grid">
+                <div class="impact-item">
+                    <div class="impact-item-icon">🗺️</div>
+                    <div>
+                        <h3>Servidores e Cartografia Interativa</h3>
+                        <p>Manutenção dos nós de mapa (@mapcn/map), renderização vetorial e servidores sem anúncios comerciais.</p>
+                    </div>
+                </div>
+                <div class="impact-item">
+                    <div class="impact-item-icon">📚</div>
+                    <div>
+                        <h3>Educação e Acesso Livre</h3>
+                        <p>O Quiz JimBongo e os dados biológicos são e sempre serão 100% gratuitos para crianças, estudantes e investigadores.</p>
+                    </div>
+                </div>
+                <div class="impact-item">
+                    <div class="impact-item-icon">🇦🇴</div>
+                    <div>
+                        <h3>Foco na Biodiversidade Angolana</h3>
+                        <p>Documentação dos parques nacionais (Quiçama, Iona, Cangandala) e proteção das espécies raras de Angola.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Apoio Local (Angola / Multicaixa Express) -->
+        <section class="local-support-box">
+            <h3>Está em Angola e prefere apoiar localmente?</h3>
+            <p>
+                Pode apoiar o desenvolvimento do Afric.Fauna via transferência bancária ou Multicaixa Express (Kwanza):
+            </p>
+            <div class="iban-field">
+                <span id="ibanText">AO06.0040.0000.8923.4912.1012.3 (Banco BAI - António Mendes)</span>
+                <button class="btn-copy" onclick="copiarIban()">Copiar IBAN</button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Rodapé -->
+    <footer class="apoie-footer">
+        <p>2026 — <b>Afric.Fauna</b>. Uma iniciativa de conservação aberta.</p>
+        <p>Desenvolvido com carinho por <a href="https://github.com/MisterAntoY" target="_blank">MisterAntoY</a> 🇦🇴</p>
+        <p>Dúvidas ou parcerias? Entre em contacto pelo email: <a href="mailto:mendes.antonio@pricen.ao">mendes.antonio@pricen.ao</a></p>
+    </footer>
+
+    <script>
+        // Lógica do Menu Lateral
+        const botaoMenu = document.getElementById('menuG');
+        const menu = document.getElementById('menuB');
+        const menuOverlay = document.getElementById('menuOverlay');
+
+        function abrirMenu() {
+            menu.classList.add('ativo');
+            menuOverlay.classList.add('ativo');
+            botaoMenu.setAttribute('aria-expanded', 'true');
+        }
+
+        function fecharMenu() {
+            menu.classList.remove('ativo');
+            menuOverlay.classList.remove('ativo');
+            botaoMenu.setAttribute('aria-expanded', 'false');
+        }
+
+        if (botaoMenu) {
+            botaoMenu.addEventListener('click', () => {
+                if (menu.classList.contains('ativo')) {
+                    fecharMenu();
+                } else {
+                    abrirMenu();
+                }
+            });
+        }
+
+        if (menuOverlay) menuOverlay.addEventListener('click', fecharMenu);
+
+        // Copiar IBAN
+        function copiarIban() {
+            const iban = document.getElementById('ibanText').innerText;
+            navigator.clipboard.writeText(iban).then(() => {
+                alert('IBAN copiado para a área de transferência com sucesso!');
+            }).catch(() => {
+                alert('Selecione e copie o IBAN manualmente.');
+            });
+        }
+    </script>
+</body>
+</html>
